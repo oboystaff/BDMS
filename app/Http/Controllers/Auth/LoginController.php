@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Auth\LoginRequest;
-
+use App\Models\SalesAgent;
 
 class LoginController extends Controller
 {
@@ -38,6 +38,16 @@ class LoginController extends Controller
             $user = User::where('phone', $request->validated('username'))
                 ->orWhere('email', $request->validated('username'))
                 ->first();
+
+            $agent = SalesAgent::where('phone', $user->phone)
+                ->orWhere('email', $user->email)
+                ->first();
+
+            if (!empty($agent)) {
+                $user['is_agent'] = true;
+            } else {
+                $user['is_agent'] = false;
+            }
 
             session()->regenerate();
 
