@@ -12,6 +12,7 @@ use App\Http\Requests\Registration\UpdateWholesaleRequest;
 use App\Models\Registration;
 use App\Models\RegistrationType;
 use App\Models\User;
+use App\Models\UserType;
 
 class RegistrationController extends Controller
 {
@@ -35,6 +36,28 @@ class RegistrationController extends Controller
         }
     }
 
+    public function byType($id)
+    {
+        try {
+            $data = Registration::with(['region', 'zone', 'territory', 'registrationType'])
+                ->where('reg_type_id', $id)
+                ->get();
+
+            if (count($data) == 0) {
+                return response()->json([
+                    'message' => 'Client registration not found'
+                ], 422);
+            }
+
+            return response()->json([
+                'message' => 'Get all client registrations',
+                'data' => $data
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+    }
+
     public function storeSchool(CreateSchoolRequest $request)
     {
         try {
@@ -46,7 +69,12 @@ class RegistrationController extends Controller
                 ->latest('created_at')
                 ->first();
 
-            $data['reg_type_id'] = $registrationType->id;
+            $userType = UserType::query()
+                ->where('name', 'like', '%user%')
+                ->latest('created_at')
+                ->first();
+
+            $data['reg_type_id'] = $registrationType->id ?? '';
 
             $reg = Registration::create($data);
 
@@ -56,7 +84,8 @@ class RegistrationController extends Controller
                     'email' => $reg->email ?? '',
                     'phone' => $reg->phone,
                     'region_id' => $reg->region_id,
-                    'password' => env('DEFAULT_PASSWORD')
+                    'password' => env('DEFAULT_PASSWORD'),
+                    'user_type_id' => $userType->id ?? ''
                 ];
 
                 User::create($userData);
@@ -82,7 +111,12 @@ class RegistrationController extends Controller
                 ->latest('created_at')
                 ->first();
 
-            $data['reg_type_id'] = $registrationType->id;
+            $userType = UserType::query()
+                ->where('name', 'like', '%user%')
+                ->latest('created_at')
+                ->first();
+
+            $data['reg_type_id'] = $registrationType->id ?? '';
 
             $reg = Registration::create($data);
 
@@ -92,7 +126,8 @@ class RegistrationController extends Controller
                     'email' => $reg->email ?? '',
                     'phone' => $reg->phone,
                     'region_id' => $reg->region_id,
-                    'password' => env('DEFAULT_PASSWORD')
+                    'password' => env('DEFAULT_PASSWORD'),
+                    'user_type_id' => $userType->id ?? ''
                 ];
 
                 User::create($userData);
@@ -118,7 +153,12 @@ class RegistrationController extends Controller
                 ->latest('created_at')
                 ->first();
 
-            $data['reg_type_id'] = $registrationType->id;
+            $userType = UserType::query()
+                ->where('name', 'like', '%user%')
+                ->latest('created_at')
+                ->first();
+
+            $data['reg_type_id'] = $registrationType->id ?? '';
 
             $reg = Registration::create($data);
 
@@ -128,7 +168,8 @@ class RegistrationController extends Controller
                     'email' => $reg->email ?? '',
                     'phone' => $reg->phone,
                     'region_id' => $reg->region_id,
-                    'password' => env('DEFAULT_PASSWORD')
+                    'password' => env('DEFAULT_PASSWORD'),
+                    'user_type_id' => $userType->id ?? ''
                 ];
 
                 User::create($userData);

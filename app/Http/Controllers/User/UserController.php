@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $data = User::with(['region'])->get();
+            $data = User::with(['region', 'userType'])->get();
 
             return response()->json([
                 'message' => 'Get all users',
@@ -45,7 +45,7 @@ class UserController extends Controller
     public function show($id)
     {
         try {
-            $user = User::with(['region'])
+            $user = User::with(['region', 'userType'])
                 ->where('id', $id)
                 ->orWhere('phone', $id)
                 ->orWhere('email', $id)

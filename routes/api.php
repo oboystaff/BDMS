@@ -57,6 +57,7 @@ Route::post('/registration-type/update/{id}', [RegistrationType\RegistrationType
 
 Route::get('/registrations', [Registration\RegistrationController::class, 'index']);
 Route::get('/registration/show/{id}', [Registration\RegistrationController::class, 'show']);
+Route::get('/registration/type/{id}', [Registration\RegistrationController::class, 'byType']);
 Route::post('/registration/create/school', [Registration\RegistrationController::class, 'storeSchool']);
 Route::post('/registration/create/bookshop', [Registration\RegistrationController::class, 'storeBookshop']);
 Route::post('/registration/create/wholesale', [Registration\RegistrationController::class, 'storeWholesale']);
