@@ -20,7 +20,11 @@ class LoginController extends Controller
             $result = filter_var($request->validated('username'), FILTER_VALIDATE_EMAIL);
 
             if (empty($result)) {
-                if (!auth()->attempt(['phone' => $request->validated('username'), 'password' => $request->validated('password')])) {
+                if (!auth()->attempt([
+                    'phone' => $request->validated('username'),
+                    'password' => $request->validated('password'),
+                    'status' => 'Active'
+                ])) {
                     throw ValidationException::withMessages([
                         'username' => 'Your provided credentials could not be verified.'
                     ]);
@@ -28,7 +32,11 @@ class LoginController extends Controller
             }
 
             if (!empty($result)) {
-                if (!auth()->attempt(['email' => $request->validated('username'), 'password' => $request->validated('password')])) {
+                if (!auth()->attempt([
+                    'email' => $request->validated('username'),
+                    'password' => $request->validated('password'),
+                    'status' => 'Active'
+                ])) {
                     throw ValidationException::withMessages([
                         'username' => 'Your provided credentials could not be verified.'
                     ]);

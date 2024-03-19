@@ -10,6 +10,7 @@ use App\Http\Controllers\RegistrationType;
 use App\Http\Controllers\Registration;
 use App\Http\Controllers\User;
 use App\Http\Controllers\Auth;
+use App\Http\Controllers\UserType;
 
 
 /*
@@ -67,3 +68,8 @@ Route::get('/users', [User\UserController::class, 'index']);
 Route::get('/user/show/{id}', [User\UserController::class, 'show']);
 Route::post('/user/create', [User\UserController::class, 'store']);
 Route::post('/user/update/{id}', [User\UserController::class, 'update']);
+
+Route::get('/user-types', [UserType\UserTypeController::class, 'index']);
+Route::get('/user-type/show/{id}', [UserType\UserTypeController::class, 'show']);
+Route::post('/user-type/create', [UserType\UserTypeController::class, 'store']);
+Route::post('/user-type/update/{id}', [UserType\UserTypeController::class, 'update']);

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\UserType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class CreateUserTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +23,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string'],
-            'email' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string'],
-            'region_id' => ['nullable', 'string', 'exists:regions,id'],
-            'password' => ['nullable', 'confirmed'],
-            'status' => ['nullable', 'string']
+            'name' => ['required', 'string', Rule::unique('user_types', 'name')]
         ];
     }
 }
