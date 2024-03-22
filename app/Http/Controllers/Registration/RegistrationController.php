@@ -24,7 +24,7 @@ class RegistrationController extends Controller
     public function index()
     {
         try {
-            $data = Registration::with(['region', 'zone', 'territory', 'registrationType'])
+            $data = Registration::with(['region', 'zone', 'territory', 'registrationType', 'agent'])
                 ->get();
 
             return response()->json([
@@ -39,7 +39,7 @@ class RegistrationController extends Controller
     public function byType($id)
     {
         try {
-            $data = Registration::with(['region', 'zone', 'territory', 'registrationType'])
+            $data = Registration::with(['region', 'zone', 'territory', 'registrationType', 'agent'])
                 ->where('reg_type_id', $id)
                 ->get();
 
@@ -187,7 +187,7 @@ class RegistrationController extends Controller
     public function show($id)
     {
         try {
-            $registration = Registration::with(['region', 'zone', 'territory', 'registrationType'])
+            $registration = Registration::with(['region', 'zone', 'territory', 'registrationType', 'agent'])
                 ->where('id', $id)
                 ->orWhere('reg_id', $id)
                 ->first();

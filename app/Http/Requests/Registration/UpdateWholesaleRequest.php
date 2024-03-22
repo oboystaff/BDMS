@@ -28,6 +28,8 @@ class UpdateWholesaleRequest extends FormRequest
             'region_id' => ['nullable', 'string', 'exists:regions,id'],
             'zone_id' => ['nullable', 'string', 'exists:zones,id'],
             'territory_id' => ['nullable', 'string', 'exists:territories,id'],
+            'designation' => ['nullable', 'string'],
+            'community' => ['nullable', 'string'],
             'latitude' => ['nullable', 'numeric', 'between:-180,180'],
             'longitude' => ['nullable', 'numeric', 'required_with:longitude', 'between:-90,90']
         ];

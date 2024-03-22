@@ -30,9 +30,11 @@ class UpdateSchoolRequest extends FormRequest
             'contact_person_name' => ['nullable', 'string'],
             'contact_person_phone' => ['nullable', 'string'],
             'contact_person_email' => ['nullable', 'string'],
+            'designation' => ['nullable', 'string'],
             'region_id' => ['nullable', 'string', 'exists:regions,id'],
             'zone_id' => ['nullable', 'string', 'exists:zones,id'],
             'territory_id' => ['nullable', 'string', 'exists:territories,id'],
+            'community' => ['nullable', 'string'],
             'latitude' => ['nullable', 'numeric', 'between:-180,180'],
             'longitude' => ['nullable', 'numeric', 'required_with:longitude', 'between:-90,90']
         ];

@@ -23,12 +23,14 @@ class CreateWholesaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', Rule::unique('registrations', 'name')],
+            'name' => ['required', 'string'],
             'email' => ['required', 'string', Rule::unique('registrations', 'email')],
             'phone' => ['required', 'string', Rule::unique('registrations', 'phone')],
             'region_id' => ['required', 'string', 'exists:regions,id'],
             'zone_id' => ['required', 'string', 'exists:zones,id'],
             'territory_id' => ['required', 'string', 'exists:territories,id'],
+            'designation' => ['nullable', 'string'],
+            'community' => ['nullable', 'string'],
             'latitude' => ['required', 'numeric', 'between:-180,180'],
             'longitude' => ['required', 'numeric', 'required_with:longitude', 'between:-90,90']
         ];
