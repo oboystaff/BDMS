@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\SalesAgent;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -70,6 +71,27 @@ class LoginController extends Controller
             return response()->json([
                 'message' => 'Unable to login. ' . $ex->getMessage(),
             ], 422);
+        }
+    }
+
+    public function validateToken($token)
+    {
+        try {
+            $token = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+            $user = isset($token) ? $token->tokenable : null;
+
+            if (empty($user)) {
+                return response()->json([
+                    'message' => 'Invalid token'
+                ], 422);
+            }
+
+            return response()->json([
+                'message' => 'Token validated successfully',
+                'data' => $user->load(['userType'])
+            ]);
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
         }
     }
 }

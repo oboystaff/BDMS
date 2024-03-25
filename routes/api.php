@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [Auth\LoginController::class, 'index']);
+Route::get('/auth/validate/{token}', [Auth\LoginController::class, 'validateToken']);
 
 Route::get('/zones', [Zone\ZoneController::class, 'index']);
 Route::get('/zone/show/{id}', [Zone\ZoneController::class, 'show']);
