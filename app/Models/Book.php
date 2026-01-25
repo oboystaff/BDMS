@@ -28,4 +28,29 @@ class Book extends Model
     {
         return $this->belongsTo(Level::class, 'level_id');
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (self $routine) {
+            $routine->book_id =  $routine->generateBookId();
+        });
+    }
+
+    public function generateBookId()
+    {
+        $book_id = rand(10000000, 99999999);
+
+        while (self::where('book_id', $book_id)->exists()) {
+            $this->generateBookId();
+        }
+
+        return $book_id;
+    }
 }

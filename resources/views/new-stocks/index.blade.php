@@ -19,30 +19,15 @@
             </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                    <polyline points="9 11 12 14 22 4"></polyline>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                </svg>
-                <strong>{{ session('error') }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
-                            class="fa-solid fa-xmark"></i></span>
-                </button>
-            </div>
-        @endif
-
         <div class="col-lg-12">
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">View Zonal Sales Officers</h4>
+                        <h4 class="card-title">Add New Stock</h4>
                     </div>
 
                     <div>
-                        <a href="{{ route('zonal-sales-officers.create') }}" class="btn btn-primary btn-sm ms-2">+ Add Zonal
-                            Sales Officer</a>
+                        <a href="{{ route('books.create') }}" class="btn btn-primary btn-sm ms-2">+ Add Book</a>
                     </div>
                 </div>
 
@@ -54,33 +39,27 @@
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Status</th>
+                                            <th>Subject Name</th>
+                                            <th>Level</th>
+                                            <th>Unit Price</th>
+                                            <th>Quantity</th>
+                                            <th>Min Stock Level</th>
                                             <th>Created By</th>
                                             <th>Created Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($zonalSalesOfficers as $index => $zonalSalesOfficer)
+                                        @foreach ($books as $index => $book)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $zonalSalesOfficer->name }}</td>
-                                                <td>{{ $zonalSalesOfficer->email }}</td>
-                                                <td>{{ $zonalSalesOfficer->phone }}</td>
-                                                @if ($zonalSalesOfficer->status == 'Active')
-                                                    <td><span
-                                                            class="badge light badge-success">{{ $zonalSalesOfficer->status }}</span>
-                                                    </td>
-                                                @else
-                                                    <td><span
-                                                            class="badge light badge-danger">{{ $zonalSalesOfficer->status }}</span>
-                                                    </td>
-                                                @endif
-                                                <td>{{ $zonalSalesOfficer->createdBy->name ?? 'N/A' }}</td>
-                                                <td>{{ $zonalSalesOfficer->created_at }}</td>
+                                                <td>{{ $book->subject->name ?? 'N/A' }}</td>
+                                                <td>{{ $book->level->name ?? 'N/A' }}</td>
+                                                <td>{{ $book->unit_price }}</td>
+                                                <td>{{ $book->quantity }}</td>
+                                                <td>{{ $book->minimum_stock_level }}</td>
+                                                <td>{{ $book->createdBy->name ?? 'N/A' }}</td>
+                                                <td>{{ $book->created_at }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="btn-link" data-bs-toggle="dropdown"
@@ -107,10 +86,10 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('zonal-sales-officers.show', $zonalSalesOfficer) }}">View
+                                                                    href="{{ route('books.show', $book) }}">View
                                                                 </a>
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('zonal-sales-officers.edit', $zonalSalesOfficer) }}">Edit
+                                                                    href="{{ route('books.new_stock', $book) }}">New Stock
                                                                 </a>
                                                             </div>
                                                         </div>

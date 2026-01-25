@@ -5,8 +5,10 @@ namespace App\Http\Controllers\ZonalSalesOfficer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ZonalSalesOfficer\CreateZonalSalesOfficerRequest;
 use App\Http\Requests\ZonalSalesOfficer\UpdateZonalSalesOfficerRequest;
+use App\Models\User;
 use App\Models\ZonalSalesOfficer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ZonalSalesOfficerController extends Controller
 {
@@ -27,7 +29,25 @@ class ZonalSalesOfficerController extends Controller
         $data = $request->validated();
         $data['created_by'] = $request->user()->id;
 
-        ZonalSalesOfficer::create($data);
+        $user = User::where('phone', $data['phone'])->orWhere('email', $data['email'])->first();
+
+        if (!empty($user)) {
+            return redirect()->route('zonal-sales-officers.index')->with('error', 'This person already has record in the user account table');
+        }
+
+        $zso = ZonalSalesOfficer::create($data);
+
+        if ($zso) {
+            $userData = [
+                'name' => $data['name'],
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'password' => Hash::make(env('DEFAULT_PASSWORD')),
+                'zso_id' => $zso->id
+            ];
+
+            User::create($userData);
+        }
 
         return redirect()->route('zonal-sales-officers.index')->with('status', 'Zonal sales officer created successfully.');
     }

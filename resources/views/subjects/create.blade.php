@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">Add Subjects</h4>
+                        <h4 class="card-title">Add Subject</h4>
                     </div>
 
                     <div>

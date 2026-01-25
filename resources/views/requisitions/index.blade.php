@@ -19,30 +19,16 @@
             </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                    <polyline points="9 11 12 14 22 4"></polyline>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                </svg>
-                <strong>{{ session('error') }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
-                            class="fa-solid fa-xmark"></i></span>
-                </button>
-            </div>
-        @endif
-
         <div class="col-lg-12">
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">View Zonal Sales Officers</h4>
+                        <h4 class="card-title">View Requisitions</h4>
                     </div>
 
                     <div>
-                        <a href="{{ route('zonal-sales-officers.create') }}" class="btn btn-primary btn-sm ms-2">+ Add Zonal
-                            Sales Officer</a>
+                        <a href="{{ route('requisitions.index-book') }}" class="btn btn-primary btn-sm ms-2">+ Add
+                            Requisition</a>
                     </div>
                 </div>
 
@@ -54,33 +40,35 @@
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
+                                            <th>ZSO Name</th>
+                                            <th>Book ID</th>
+                                            <th>Subject</th>
+                                            <th>Level</th>
+                                            <th>Quantity</th>
                                             <th>Status</th>
                                             <th>Created By</th>
+                                            <th>Approved By</th>
                                             <th>Created Date</th>
+                                            <th>Approved Date</th>
+                                            <th>Pickup Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($zonalSalesOfficers as $index => $zonalSalesOfficer)
+                                        @foreach ($requisitions as $index => $requisition)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $zonalSalesOfficer->name }}</td>
-                                                <td>{{ $zonalSalesOfficer->email }}</td>
-                                                <td>{{ $zonalSalesOfficer->phone }}</td>
-                                                @if ($zonalSalesOfficer->status == 'Active')
-                                                    <td><span
-                                                            class="badge light badge-success">{{ $zonalSalesOfficer->status }}</span>
-                                                    </td>
-                                                @else
-                                                    <td><span
-                                                            class="badge light badge-danger">{{ $zonalSalesOfficer->status }}</span>
-                                                    </td>
-                                                @endif
-                                                <td>{{ $zonalSalesOfficer->createdBy->name ?? 'N/A' }}</td>
-                                                <td>{{ $zonalSalesOfficer->created_at }}</td>
+                                                <td>{{ $requisition->zso->name ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->book_id }}</td>
+                                                <td>{{ $requisition->subject->name ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->level->name ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->quantity }}</td>
+                                                <td>{{ $requisition->status }}</td>
+                                                <td>{{ $requisition->createdBy->name ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->approvedBy->name ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->created_at }}</td>
+                                                <td>{{ $requisition->approved_date }}</td>
+                                                <td>{{ $requisition->pickup_date }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="btn-link" data-bs-toggle="dropdown"
@@ -107,10 +95,10 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('zonal-sales-officers.show', $zonalSalesOfficer) }}">View
+                                                                    href="{{ route('requisitions.show', $requisition) }}">View
                                                                 </a>
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('zonal-sales-officers.edit', $zonalSalesOfficer) }}">Edit
+                                                                    href="{{ route('requisitions.edit', $requisition) }}">Edit
                                                                 </a>
                                                             </div>
                                                         </div>

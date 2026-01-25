@@ -206,29 +206,29 @@
                     </li>
                     {{-- @endcanany --}}
 
-                    @canany(['companies.view', 'sites.view', 'customers.view'])
-                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                                <div class="menu-icon">
-                                    <i class="fs-20 fa-solid fa-sitemap"> </i>
-                                </div>
-                                <span class="nav-text mx-2">Clientele</span>
-                            </a>
-                            <ul aria-expanded="false">
+                    {{-- @canany(['companies.view', 'sites.view', 'customers.view']) --}}
+                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                            <div class="menu-icon">
+                                <i class="fs-20 fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <span class="nav-text mx-2">Stock</span>
+                        </a>
+                        <ul aria-expanded="false">
 
-                                {{-- @can('companies.view')
+                            {{-- @can('companies.view')
                                     <li><a href="{{ route('companies.index') }}">Companies</a></li>
                                 @endcan --}}
 
-                                @can('sites.view')
-                                    <li><a href="{{ route('sites.index') }}">Sites</a></li>
-                                @endcan
+                            {{-- @can('sites.view') --}}
+                            <li><a href="{{ route('new-stocks.index') }}">New Stock</a></li>
+                            {{-- @endcan --}}
 
-                                @can('customers.view')
-                                    <li><a href="{{ route('customers.index') }}">Companies</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                            {{-- @can('customers.view') --}}
+                            <li><a href="{{ route('inventories.index') }}">Inventory</a></li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
 
                     @canany(['drivers.view', 'vehicles.view', 'transporters.view'])
                         <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
@@ -255,47 +255,29 @@
                         </li>
                     @endcanany
 
-                    @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view',
-                        'location-types.view', 'schedules.view', 'pickups.view'])
-                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                                <div class="menu-icon">
-                                    <i class="fs-20 mx-2 fa-solid fa-trash"> </i>
-                                </div>
-                                <span class="nav-text"> Waste </span>
-                            </a>
-                            <ul aria-expanded="false">
-                                @can('waste-types.view')
-                                    <li><a href="{{ route('waste-types.index') }}">Waste Types</a></li>
-                                @endcan
+                    {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
+                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                            <div class="menu-icon">
+                                <i class="fs-20 mx-2 fa-solid fa-envelope-open-text"></i>
+                            </div>
+                            <span class="nav-text"> Request </span>
+                        </a>
+                        <ul aria-expanded="false">
+                            {{-- @can('waste-types.view') --}}
+                            <li><a href="{{ route('requisitions.index') }}">Requisitions</a></li>
+                            {{-- @endcan --}}
 
-                                @can('hazard-classes.view')
-                                    <li><a href="{{ route('hazard-classes.index') }}">Hazard Class</a></li>
-                                @endcan
+                            {{-- @can('hazard-classes.view') --}}
+                            <li><a href="{{ route('book-returns.index') }}">Returns</a></li>
+                            {{-- @endcan --}}
 
-                                @can('handling-dispositions.view')
-                                    <li><a href="{{ route('handling-dispositions.index') }}">Handling Dispositions</a>
-                                    </li>
-                                @endcan
-
-                                @can('location-types.view')
-                                    <li><a href="{{ route('location-types.index') }}"> Disposal/Treatment Location</a>
-                                    </li>
-                                @endcan
-
-                                @can('schedules.view')
-                                    <li><a href="{{ route('schedules.index') }}"> Schedules</a></li>
-                                @endcan
-
-                                @can('pickups.view')
-                                    <li><a href="{{ route('pickups.index') }}"> Pickups</a></li>
-                                @endcan
-
-                                @can('pickups.view')
-                                    <li><a href="{{ route('certificates.index') }}"> Certificates</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                            @can('handling-dispositions.view')
+                                <li><a href="{{ route('handling-dispositions.index') }}">Handling Dispositions</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
 
 
                     @canany(['reports.view'])
@@ -345,11 +327,15 @@
                             {{-- @endcan --}}
 
                             {{-- @can('users.view') --}}
-                            <li><a href="{{ route('subjects.index') }}"> Subject</a></li>
+                            <li><a href="{{ route('subjects.index') }}"> Subjects</a></li>
                             {{-- @endcan --}}
 
                             {{-- @can('users.view') --}}
-                            <li><a href="{{ route('levels.index') }}"> Level</a></li>
+                            <li><a href="{{ route('levels.index') }}"> Levels</a></li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('users.view') --}}
+                            <li><a href="{{ route('books.index') }}"> Books</a></li>
                             {{-- @endcan --}}
 
                             @can('roles.view')
@@ -367,8 +353,8 @@
         </div>
 
         <!--**********************************
-                                Content body start
-                            ***********************************-->
+                            Content body start
+                        ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
 
@@ -377,13 +363,13 @@
             </div>
         </div>
         <!--**********************************
-                                Content body end
-                            ***********************************-->
+                            Content body end
+                        ***********************************-->
 
 
         <!--**********************************
-                                Footer start
-                            ***********************************-->
+                            Footer start
+                        ***********************************-->
         <div class="footer">
             <div class="copyright">
                 <p>Copyright © Developed by <a href="#" target="_blank">Cyber Solutions Limited</a>
@@ -392,26 +378,26 @@
             </div>
         </div>
         <!--**********************************
-                                Footer end
-                            ***********************************-->
+                            Footer end
+                        ***********************************-->
 
         <!--**********************************
-                               Support ticket button start
-                            ***********************************-->
+                           Support ticket button start
+                        ***********************************-->
 
         <!--**********************************
-                               Support ticket button end
-                            ***********************************-->
+                           Support ticket button end
+                        ***********************************-->
 
 
     </div>
     <!--**********************************
-                            Main wrapper end
-                        ***********************************-->
+                        Main wrapper end
+                    ***********************************-->
 
     <!--**********************************
-                            Scripts
-                        ***********************************-->
+                        Scripts
+                    ***********************************-->
     <!-- Required vendors -->
     <script src="{{ asset('assets/vendor/global/global.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
