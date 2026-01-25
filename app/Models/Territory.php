@@ -23,4 +23,9 @@ class Territory extends Model
     {
         return $this->belongsTo(Zone::class, 'zone_id');
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

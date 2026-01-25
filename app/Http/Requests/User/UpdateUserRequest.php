@@ -22,13 +22,12 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string'],
-            'email' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string'],
+            'name' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'phone' => ['required', 'string'],
             'region_id' => ['nullable', 'string', 'exists:regions,id'],
             'password' => ['nullable', 'confirmed'],
-            'status' => ['nullable', 'string'],
-            'user_type_id' => ['nullable', 'string', 'exists:user_types,id']
+            'status' => ['nullable', 'string', 'in:Active,InActive']
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Zone;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class CreateZoneRequest extends FormRequest
 {
@@ -23,7 +22,8 @@ class CreateZoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', Rule::unique('zones', 'name')]
+            'name' => ['required', 'string', 'unique:zones,name'],
+            'zonal_sales_officer_id' => ['required', 'string', 'exists:zonal_sales_officers,id']
         ];
     }
 }

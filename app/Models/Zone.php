@@ -13,4 +13,14 @@ class Zone extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function zonalSalesOfficer()
+    {
+        return $this->belongsTo(ZonalSalesOfficer::class, 'zonal_sales_officer_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

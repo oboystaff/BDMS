@@ -5,82 +5,56 @@ namespace App\Http\Controllers\Zone;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Zone\CreateZoneRequest;
 use App\Http\Requests\Zone\UpdateZoneRequest;
+use App\Models\ZonalSalesOfficer;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 
 class ZoneController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum']);
-    }
-
     public function index()
     {
-        try {
-            $data = Zone::get();
+        $zones = Zone::orderBy('created_at', 'DESC')->get();
 
-            return response()->json([
-                'message' => 'Get all zones',
-                'data' => $data
-            ]);
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
-        }
+        return view('zones.index', compact('zones'));
+    }
+
+    public function create()
+    {
+        $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
+            ->where('status', 'Active')
+            ->get();
+
+        return view('zones.create', compact('zonalSalesOfficers'));
     }
 
     public function store(CreateZoneRequest $request)
     {
-        try {
-            $data = Zone::create($request->validated());
+        $data = $request->validated();
+        $data['created_by'] = $request->user()->id;
 
-            return response()->json([
-                'message' => 'Zone created successfully',
-                'data' => $data
-            ]);
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
-        }
+        Zone::create($data);
+
+        return redirect()->route('zones.index')->with('status', 'Zone created successfully.');
     }
 
-    public function show($id)
+    public function show(Zone $zone)
     {
-        try {
-            $zone = Zone::where('id', $id)->first();
-
-            if (empty($zone)) {
-                return response()->json([
-                    'message' => 'Zone does not exist'
-                ], 422);
-            }
-
-            return response()->json([
-                'message' => 'Get particular zone',
-                'data' => $zone
-            ]);
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
-        }
+        return view('zones.show', compact('zone'));
     }
 
-    public function update(UpdateZoneRequest $request, $id)
+    public function edit(Zone $zone)
     {
-        try {
-            $zone = Zone::where('id', $id)->first();
+        $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
+            ->where('status', 'Active')
+            ->get();
 
-            if (empty($zone)) {
-                return response()->json([
-                    'message' => 'Zone does not exist'
-                ], 422);
-            }
+        return view('zones.edit', compact('zone', 'zonalSalesOfficers'));
+    }
 
-            $zone->update($request->validated());
+    public function update(UpdateZoneRequest $request, Zone $zone)
+    {
+        $zone->update($request->validated());
 
-            return response()->json([
-                'message' => 'Zone updated successfully'
-            ]);
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
-        }
+        return redirect()->route('zones.index')->with('status', 'Zone updated successfully.');
     }
 }

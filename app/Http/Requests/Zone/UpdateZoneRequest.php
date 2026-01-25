@@ -22,7 +22,9 @@ class UpdateZoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string']
+            'name' => ['required', 'string'],
+            'zonal_sales_officer_id' => ['required', 'string', 'exists:zonal_sales_officers,id'],
+            'status' => ['nullable', 'string', 'in:Active,InActive']
         ];
     }
 }

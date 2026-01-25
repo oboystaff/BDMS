@@ -2,15 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Zone;
-use App\Http\Controllers\Region;
-use App\Http\Controllers\Territory;
-use App\Http\Controllers\SalesAgent;
-use App\Http\Controllers\RegistrationType;
-use App\Http\Controllers\Registration;
-use App\Http\Controllers\User;
-use App\Http\Controllers\Auth;
-use App\Http\Controllers\UserType;
+use App\Http\Controllers\API\Zone;
+use App\Http\Controllers\API\Region;
+use App\Http\Controllers\API\Territory;
+use App\Http\Controllers\API\SalesAgent;
+use App\Http\Controllers\API\RegistrationType;
+use App\Http\Controllers\API\Registration;
+use App\Http\Controllers\API\User;
+use App\Http\Controllers\API\Auth;
+use App\Http\Controllers\API\UserType;
 
 
 /*
