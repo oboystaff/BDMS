@@ -37,11 +37,12 @@
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">View Available Books</h4>
+                        <h4 class="card-title">View Book Returns</h4>
                     </div>
 
                     <div>
-                        <a href="{{ route('requisitions.index') }}" class="btn btn-primary btn-sm ms-2">Back</a>
+                        <a href="{{ route('requisitions.index') }}" class="btn btn-primary btn-sm ms-2">+ Add
+                            Book Return</a>
                     </div>
                 </div>
 
@@ -53,27 +54,29 @@
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Subject Name</th>
+                                            <th>ZSO Name</th>
+                                            <th>Book ID</th>
+                                            <th>Subject</th>
                                             <th>Level</th>
-                                            <th>Unit Price</th>
                                             <th>Quantity</th>
-                                            <th>Min Stock Level</th>
-                                            <th>Created By</th>
-                                            <th>Created Date</th>
+                                            <th>Reason</th>
+                                            <th>Received By</th>
+                                            <th>Received Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($books as $index => $book)
+                                        @foreach ($bookReturns as $index => $bookReturn)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $book->subject->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->level->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->unit_price }}</td>
-                                                <td>{{ $book->quantity }}</td>
-                                                <td>{{ $book->minimum_stock_level }}</td>
-                                                <td>{{ $book->createdBy->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->created_at }}</td>
+                                                <td>{{ $bookReturn->zso->name ?? 'N/A' }}</td>
+                                                <td>{{ $bookReturn->book_id }}</td>
+                                                <td>{{ $bookReturn->requisition->subject->name ?? 'N/A' }}</td>
+                                                <td>{{ $bookReturn->requisition->level->name ?? 'N/A' }}</td>
+                                                <td>{{ $bookReturn->quantity }}</td>
+                                                <td>{{ $bookReturn->reason }}</td>
+                                                <td>{{ $bookReturn->createdBy->name ?? 'N/A' }}</td>
+                                                <td>{{ $bookReturn->created_at }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="btn-link" data-bs-toggle="dropdown"
@@ -100,8 +103,8 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('requisitions.create', $book) }}">Book
-                                                                    Requisition
+                                                                    href="{{ route('book-returns.show', $bookReturn) }}">View
+                                                                    Returned
                                                                 </a>
                                                             </div>
                                                         </div>

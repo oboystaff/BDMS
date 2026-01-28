@@ -19,6 +19,20 @@
             </div>
         @endif
 
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                <strong>{{ session('error') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
+                            class="fa-solid fa-xmark"></i></span>
+                </button>
+            </div>
+        @endif
+
         <div class="col-lg-12">
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
@@ -67,8 +81,8 @@
                                                 <td>{{ $requisition->createdBy->name ?? 'N/A' }}</td>
                                                 <td>{{ $requisition->approvedBy->name ?? 'N/A' }}</td>
                                                 <td>{{ $requisition->created_at }}</td>
-                                                <td>{{ $requisition->approved_date }}</td>
-                                                <td>{{ $requisition->pickup_date }}</td>
+                                                <td>{{ $requisition->approved_date ?? 'N/A' }}</td>
+                                                <td>{{ $requisition->pickup_date ?? 'N/A' }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="btn-link" data-bs-toggle="dropdown"
@@ -96,10 +110,26 @@
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
                                                                     href="{{ route('requisitions.show', $requisition) }}">View
+                                                                    Request
                                                                 </a>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('requisitions.edit', $requisition) }}">Edit
-                                                                </a>
+                                                                @if ($requisition->created_by !== request()->user()->id && $requisition->status === 'Pending')
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('requisitions.approve', $requisition) }}">Approve
+                                                                        Request
+                                                                    </a>
+                                                                @endif
+                                                                @if ($requisition->created_by !== request()->user()->id && $requisition->status === 'Approved')
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('requisitions.pickup', $requisition) }}">Pickup
+                                                                        Request
+                                                                    </a>
+                                                                @endif
+                                                                @if ($requisition->status === 'Approved')
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('book-returns.create', $requisition) }}">Book
+                                                                        Return
+                                                                    </a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

@@ -9,22 +9,25 @@
             <div class="card">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">Pickup Requisition</h4>
+                        <h4 class="card-title">View Book Return</h4>
                     </div>
 
                     <div>
-                        <a href="{{ route('requisitions.index') }}" class="btn btn-primary btn-sm ms-2">Back</a>
+                        <a href="{{ route('book-returns.index') }}" class="btn btn-primary btn-sm ms-2">Back</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="basic-form">
-                        <form method="POST" action="{{ route('requisitions.pickupData', $requisition) }}">
+                        <form method="POST" action="{{ route('book-returns.store') }}">
                             @csrf
 
+                            <input type="hidden" name="req_id" value="{{ $bookReturn->requisition->id ?? '' }}" />
                             <input type="hidden" name="book_id" value="{{ $book->book_id }}" />
                             <input type="hidden" name="subject_id" value="{{ $book->subject_id }}" />
                             <input type="hidden" name="level_id" value="{{ $book->level_id }}" />
                             <input type="hidden" name="zonal_sales_officer_id" value="{{ $zso->id ?? '' }}" />
+                            <input type="hidden" name="created_by"
+                                value="{{ $bookReturn->requisition->created_by ?? '' }}" />
 
                             <div class="row">
                                 <div class="alert alert-warning alert-dismissible fade show">
@@ -145,14 +148,28 @@
                                         <polyline points="9 11 12 14 22 4"></polyline>
                                         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                                     </svg>
-                                    <strong>NOTE: BOOK REQUISITION DETAILS HERE</strong>
+                                    <strong>NOTE: BOOK RETURN DETAILS HERE</strong>
                                 </div>
 
                                 <div class="mb-4 col-md-6">
-                                    <label class="form-label">Quantity</label>
+                                    <label class="form-label">Quantity Requested</label>
+                                    <input type="text" name="quantity_requested"
+                                        class="form-control @error('quantity_requested') is-invalid @enderror"
+                                        placeholder="Book Quantity" value="{{ $bookReturn->requisition->quantity }}"
+                                        readonly>
+
+                                    @error('quantity_requested')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4 col-md-6">
+                                    <label class="form-label">Quantity Returned</label>
                                     <input type="text" name="quantity"
                                         class="form-control @error('quantity') is-invalid @enderror"
-                                        placeholder="Book Quantity" value="{{ $requisition->quantity }}" readonly>
+                                        placeholder="Quantity Returned" value="{{ $bookReturn->quantity }}" readonly>
 
                                     @error('quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -160,9 +177,20 @@
                                         </span>
                                     @enderror
                                 </div>
-                            </div>
 
-                            <button type="submit" class="btn btn-primary">Submit Pickup</button>
+                                <div class="mb-4 col-md-6">
+                                    <label class="form-label">Reason</label>
+                                    <input type="text" name="reason"
+                                        class="form-control @error('reason') is-invalid @enderror" placeholder="Reason"
+                                        value="{{ $bookReturn->reason ?? 'N/A' }}" readonly>
+
+                                    @error('reason')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

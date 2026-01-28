@@ -46,17 +46,17 @@
                                 <div class="col-xl-12">
                                     <div class="auth-form">
                                         <div class="text-center mb-2">
-                                            <img src="{{ asset('assets/images/zoil.png') }}" class="h-100"
-                                                alt="ZOIL ">
+                                            <img src="{{ asset('assets/images/appointed_banner.jpeg') }}" class="h-100"
+                                                alt="Appointed" style="width:230px;height:250px">
                                             {{-- <h2 class="text-blue">Welcome !</h2> --}}
                                         </div>
-                                        <h6 class="text-center fs-14 fw-lighter text-blue mb-4">Please sign in with
-                                            your credentials</h6>
+                                        <h2 class="text-center fs-16 fw-lighter text-blue mb-4">Please sign in with
+                                            your credentials</h2>
                                         <form method="POST" action="{{ route('auth.login') }}">
                                             @csrf
 
                                             <div class="mb-2">
-                                                <label class="mb-1 fs-12  fw-lighter">Phone Number</label>
+                                                <label class="mb-1 fs-16  fw-lighter">Phone Number</label>
                                                 <input type="text" name="username"
                                                     class="form-control @error('username') is-invalid @enderror"
                                                     placeholder="Phone Number">
@@ -68,7 +68,7 @@
                                                 @enderror
                                             </div>
                                             <div class="mb-4">
-                                                <label class="mb-1 fs-12 fw-lighter">Password</label>
+                                                <label class="mb-1 fs-16 fw-lighter">Password</label>
                                                 <input type="password" name="password"
                                                     class="form-control @error('password') is-invalid @enderror"
                                                     placeholder="Password">

@@ -64,9 +64,10 @@
         ***********************************-->
         <div class="nav-header" style="background: white;">
             <a href="javascript:void(0);" class="brand-logo">
-                <span style="color: blue">
+                <span style="color: blue;margin-left:40px">
                     {{-- <i class="fa-solid fa-trash-can" style="margin-right: 5px"></i>Zoil W.Ms System --}}
-                    <img src="{{ asset('assets/images/zoil-logo.png') }}" class="h-100" alt="ZOIL ">
+                    <img src="{{ asset('assets/images/appointed_logo.jpeg') }}" class="h-100" alt="Appointed"
+                        style="width:80px;height:80px">
                 </span>
             </a>
         </div>
@@ -230,30 +231,30 @@
                     </li>
                     {{-- @endcanany --}}
 
-                    @canany(['drivers.view', 'vehicles.view', 'transporters.view'])
-                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                                <div class="menu-icon">
-                                    <i class="fs-20 mx-2 fa-solid fa-users"> </i>
-                                </div>
-                                <span class="nav-text">Personnel</span>
-                            </a>
-                            <ul aria-expanded="false">
-                                @can('drivers.view')
-                                    <li><a href="{{ route('drivers.index') }}">Drivers</a></li>
-                                @endcan
+                    {{-- @canany(['drivers.view', 'vehicles.view', 'transporters.view']) --}}
+                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                            <div class="menu-icon">
+                                <i class="fs-20 mx-2 fa-solid fa-users"> </i>
+                            </div>
+                            <span class="nav-text">Personnel</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            {{-- @can('drivers.view') --}}
+                            <li><a href="{{ route('schools.index') }}">Schools</a></li>
+                            {{-- @endcan --}}
 
-                                @can('vehicles.view')
-                                    <li><a href="{{ route('vehicles.index') }}">Vehicles</a></li>
-                                @endcan
+                            {{-- @can('vehicles.view') --}}
+                            <li><a href="{{ route('bookshops.index') }}">Bookshops</a></li>
+                            {{-- @endcan --}}
 
-                                @can('transporters.view')
-                                    <li><a href="{{ route('transporters.index') }}">Transporters</a>
-                                    </li>
-                                @endcan
+                            @can('transporters.view')
+                                <li><a href="{{ route('transporters.index') }}">Transporters</a>
+                                </li>
+                            @endcan
 
-                            </ul>
-                        </li>
-                    @endcanany
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
 
                     {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
                     <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">

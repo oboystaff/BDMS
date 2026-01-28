@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Http\Controllers\School;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\School\CreateSchoolRequest;
+use App\Http\Requests\School\UpdateSchoolRequest;
+use App\Models\Region;
+use App\Models\Registration;
+use App\Models\Territory;
+use App\Models\ZonalSalesOfficer;
+use App\Models\Zone;
+use Illuminate\Http\Request;
+
+class SchoolController extends Controller
+{
+    public function index(Request $request)
+    {
+        $schools = Registration::orderBy('created_at', 'DESC')
+            ->when(!empty($request->user()->region_id), function ($query) use ($request) {
+                $query->where('region_id', $request->user()->region_id);
+            })
+            ->where('status', 'Active')
+            ->where('reg_type', 'school')
+            ->get();
+
+        return view('schools.index', compact('schools'));
+    }
+
+    public function create(Request $request)
+    {
+        $regions = Region::orderBy('name', 'ASC')
+            ->when(!empty($request->user()->region_id), function ($query) use ($request) {
+                $query->where('id', $request->user()->region_id);
+            })
+            ->get();
+
+        $zones = Zone::orderBy('name', 'ASC')->where('status', 'Active')->get();
+        $territories = Territory::orderBy('name', 'ASC')->where('status', 'Active')->get();
+        $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
+            ->when(!empty($request->user()->zso_id), function ($query) use ($request) {
+                $query->where('created_by', $request->user()->id);
+            })
+            ->where('status', 'Active')
+            ->get();
+
+        return view('schools.create', compact('regions', 'regions', 'zones', 'territories', 'zonalSalesOfficers'));
+    }
+
+    public function store(CreateSchoolRequest $request)
+    {
+        $data = $request->validated();
+        $data['created_by'] = $request->user()->id;
+        $data['reg_type'] = 'school';
+
+        Registration::create($data);
+
+        return redirect()->route('schools.index')->with('status', 'Schhol created successfully.');
+    }
+
+    public function show(Registration $school)
+    {
+        return view('schools.show', compact('school'));
+    }
+
+    public function edit(Request $request, Registration $school)
+    {
+        $regions = Region::orderBy('name', 'ASC')
+            ->when(!empty($request->user()->region_id), function ($query) use ($request) {
+                $query->where('id', $request->user()->region_id);
+            })
+            ->get();
+
+        $zones = Zone::orderBy('name', 'ASC')->where('status', 'Active')->get();
+        $territories = Territory::orderBy('name', 'ASC')->where('status', 'Active')->get();
+        $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
+            ->when(!empty($request->user()->zso_id), function ($query) use ($request) {
+                $query->where('created_by', $request->user()->id);
+            })
+            ->where('status', 'Active')
+            ->get();
+
+        return view('schools.edit', compact('school', 'regions', 'zones', 'territories', 'zonalSalesOfficers'));
+    }
+
+    public function update(UpdateSchoolRequest $request, Registration $school)
+    {
+        $school->update($request->validated());
+
+        return redirect()->route('schools.index')->with('status', 'School record updated successfully.');
+    }
+}

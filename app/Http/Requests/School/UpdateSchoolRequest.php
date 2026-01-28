@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API\Registration;
+namespace App\Http\Requests\School;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class CreateSchoolRequest extends FormRequest
+class UpdateSchoolRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +22,11 @@ class CreateSchoolRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', Rule::unique('registrations', 'name')],
+            'name' => ['required', 'string'],
             'type' => ['required', 'string'],
             'category' => ['required', 'string'],
-            'email' => ['required', 'string', Rule::unique('registrations', 'email')],
-            'phone' => ['required', 'string', Rule::unique('registrations', 'phone')],
+            'email' => ['required', 'string'],
+            'phone' => ['required', 'string'],
             'contact_person_name' => ['nullable', 'string'],
             'contact_person_phone' => ['nullable', 'string'],
             'region_id' => ['required', 'string', 'exists:regions,id'],

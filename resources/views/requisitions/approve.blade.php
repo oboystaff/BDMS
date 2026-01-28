@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">Pickup Requisition</h4>
+                        <h4 class="card-title">Approve Requisition</h4>
                     </div>
 
                     <div>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <div class="basic-form">
-                        <form method="POST" action="{{ route('requisitions.pickupData', $requisition) }}">
+                        <form method="POST" action="{{ route('requisitions.approveData', $requisition) }}">
                             @csrf
 
                             <input type="hidden" name="book_id" value="{{ $book->book_id }}" />
@@ -162,7 +162,9 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Submit Pickup</button>
+                            <button type="submit" name="action" value="approve" class="btn btn-primary"
+                                style="margin-right:20px">Approve</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
                         </form>
                     </div>
                 </div>

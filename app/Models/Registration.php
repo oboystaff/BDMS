@@ -34,9 +34,19 @@ class Registration extends Model
         return $this->belongsTo(User::class, 'agent_id');
     }
 
+    public function zso()
+    {
+        return $this->belongsTo(ZonalSalesOfficer::class, 'zonal_sales_officer_id');
+    }
+
     public function registrationType()
     {
         return $this->belongsTo(RegistrationType::class, 'reg_type_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     protected static function boot()

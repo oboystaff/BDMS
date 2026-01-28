@@ -14,6 +14,9 @@ use App\Http\Controllers\Inventory;
 use App\Http\Controllers\NewStock;
 use App\Http\Controllers\Requisition;
 use App\Http\Controllers\BookReturn;
+use App\Http\Controllers\School;
+use App\Http\Controllers\Bookshop;
+
 
 
 /*
@@ -128,13 +131,35 @@ Route::group(['prefix' => 'requisition', 'middleware' => 'auth:sanctum'], functi
     Route::post('/create', [Requisition\RequisitionController::class, 'store'])->name('requisitions.store');
     Route::post('/update/{requisition}', [Requisition\RequisitionController::class, 'update'])->name('requisitions.update');
     Route::get('/book', [Requisition\RequisitionController::class, 'index_book'])->name('requisitions.index-book');
+    Route::get('/approve/{requisition}', [Requisition\RequisitionController::class, 'approve'])->name('requisitions.approve');
+    Route::post('/approve/{requisition}', [Requisition\RequisitionController::class, 'approveData'])->name('requisitions.approveData');
+    Route::get('/pickup/{requisition}', [Requisition\RequisitionController::class, 'pickup'])->name('requisitions.pickup');
+    Route::post('/pickup/{requisition}', [Requisition\RequisitionController::class, 'pickupData'])->name('requisitions.pickupData');
 });
 
 Route::group(['prefix' => 'book-return', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/', [BookReturn\BookReturnController::class, 'index'])->name('book-returns.index');
-    Route::get('/create', [BookReturn\BookReturnController::class, 'create'])->name('book-returns.create');
+    Route::get('/create/{requisition}', [BookReturn\BookReturnController::class, 'create'])->name('book-returns.create');
     Route::get('/show/{bookReturn}', [BookReturn\BookReturnController::class, 'show'])->name('book-returns.show');
     Route::get('/edit/{bookReturn}', [BookReturn\BookReturnController::class, 'edit'])->name('book-returns.edit');
     Route::post('/create', [BookReturn\BookReturnController::class, 'store'])->name('book-returns.store');
     Route::post('/update/{bookReturn}', [BookReturn\BookReturnController::class, 'update'])->name('book-returns.update');
+});
+
+Route::group(['prefix' => 'school', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [School\SchoolController::class, 'index'])->name('schools.index');
+    Route::get('/create', [School\SchoolController::class, 'create'])->name('schools.create');
+    Route::post('/create', [School\SchoolController::class, 'store'])->name('schools.store');
+    Route::get('/show/{school}', [School\SchoolController::class, 'show'])->name('schools.show');
+    Route::get('/edit/{school}', [School\SchoolController::class, 'edit'])->name('schools.edit');
+    Route::post('/update/{school}', [School\SchoolController::class, 'update'])->name('schools.update');
+});
+
+Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Bookshop\BookshopController::class, 'index'])->name('bookshops.index');
+    Route::get('/create', [Bookshop\BookshopController::class, 'create'])->name('bookshops.create');
+    Route::post('/create', [Bookshop\BookshopController::class, 'store'])->name('bookshops.store');
+    Route::get('/show/{bookshop}', [Bookshop\BookshopController::class, 'show'])->name('bookshops.show');
+    Route::get('/edit/{bookshop}', [Bookshop\BookshopController::class, 'edit'])->name('bookshops.edit');
+    Route::post('/update/{bookshop}', [Bookshop\BookshopController::class, 'update'])->name('bookshops.update');
 });

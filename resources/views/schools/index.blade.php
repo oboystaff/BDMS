@@ -19,29 +19,15 @@
             </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                    <polyline points="9 11 12 14 22 4"></polyline>
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                </svg>
-                <strong>{{ session('error') }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
-                            class="fa-solid fa-xmark"></i></span>
-                </button>
-            </div>
-        @endif
-
         <div class="col-lg-12">
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
                     <div>
-                        <h4 class="card-title">View Available Books</h4>
+                        <h4 class="card-title">View Schools</h4>
                     </div>
 
                     <div>
-                        <a href="{{ route('requisitions.index') }}" class="btn btn-primary btn-sm ms-2">Back</a>
+                        <a href="{{ route('schools.create') }}" class="btn btn-primary btn-sm ms-2">+ Add School</a>
                     </div>
                 </div>
 
@@ -53,27 +39,50 @@
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Subject Name</th>
-                                            <th>Level</th>
-                                            <th>Unit Price</th>
-                                            <th>Quantity</th>
-                                            <th>Min Stock Level</th>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Category</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Contact Person</th>
+                                            <th>Contact Person Phone</th>
+                                            <th>GPS Location</th>
+                                            <th>Region</th>
+                                            <th>Zone</th>
+                                            <th>Territory</th>
+                                            <th>Zonal Officer</th>
+                                            <th>Status</th>
                                             <th>Created By</th>
                                             <th>Created Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($books as $index => $book)
+                                        @foreach ($schools as $index => $school)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $book->subject->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->level->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->unit_price }}</td>
-                                                <td>{{ $book->quantity }}</td>
-                                                <td>{{ $book->minimum_stock_level }}</td>
-                                                <td>{{ $book->createdBy->name ?? 'N/A' }}</td>
-                                                <td>{{ $book->created_at }}</td>
+                                                <td>{{ $school->name }}</td>
+                                                <td>{{ $school->type }}</td>
+                                                <td>{{ $school->category }}</td>
+                                                <td>{{ $school->email }}</td>
+                                                <td>{{ $school->phone }}</td>
+                                                <td>{{ $school->contact_person_name ?? 'N/A' }}</td>
+                                                <td>{{ $school->contact_person_phone ?? 'N/A' }}</td>
+                                                <td>{{ $school->latitude }}, {{ $school->longitude }}</td>
+                                                <td>{{ $school->region->name ?? 'N/A' }}</td>
+                                                <td>{{ $school->zone->name ?? 'N/A' }}</td>
+                                                <td>{{ $school->territory->name ?? 'N/A' }}</td>
+                                                <td>{{ $school->zso->name ?? 'N/A' }}</td>
+                                                @if ($school->status == 'Active')
+                                                    <td><span
+                                                            class="badge light badge-success">{{ $school->status }}</span>
+                                                    </td>
+                                                @else
+                                                    <td><span class="badge light badge-danger">{{ $school->status }}</span>
+                                                    </td>
+                                                @endif
+                                                <td>{{ $school->createdBy->name ?? 'N/A' }}</td>
+                                                <td>{{ $school->created_at }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <div class="btn-link" data-bs-toggle="dropdown"
@@ -100,8 +109,10 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('requisitions.create', $book) }}">Book
-                                                                    Requisition
+                                                                    href="{{ route('schools.show', $school) }}">View
+                                                                </a>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('schools.edit', $school) }}">Edit
                                                                 </a>
                                                             </div>
                                                         </div>
