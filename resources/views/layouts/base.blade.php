@@ -234,9 +234,9 @@
                     {{-- @canany(['drivers.view', 'vehicles.view', 'transporters.view']) --}}
                     <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
                             <div class="menu-icon">
-                                <i class="fs-20 mx-2 fa-solid fa-users"> </i>
+                                <i class="fs-20 fa-solid fa-users"> </i>
                             </div>
-                            <span class="nav-text">Personnel</span>
+                            <span class="nav-text mx-2">Personnel</span>
                         </a>
                         <ul aria-expanded="false">
                             {{-- @can('drivers.view') --}}
@@ -259,23 +259,46 @@
                     {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
                     <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
                             <div class="menu-icon">
-                                <i class="fs-20 mx-2 fa-solid fa-envelope-open-text"></i>
+                                <i class="fs-20 fa-solid fa-envelope-open-text"></i>
                             </div>
-                            <span class="nav-text"> Request </span>
+                            <span class="nav-text mx-2">Request</span>
                         </a>
                         <ul aria-expanded="false">
                             {{-- @can('waste-types.view') --}}
-                            <li><a href="{{ route('requisitions.index') }}">Requisitions</a></li>
+                            <li><a href="{{ route('requisitions.index') }}">Book Requisitions</a></li>
                             {{-- @endcan --}}
 
                             {{-- @can('hazard-classes.view') --}}
-                            <li><a href="{{ route('book-returns.index') }}">Returns</a></li>
+                            <li><a href="{{ route('book-returns.index') }}">Book Returns</a></li>
                             {{-- @endcan --}}
 
-                            @can('handling-dispositions.view')
-                                <li><a href="{{ route('handling-dispositions.index') }}">Handling Dispositions</a>
-                                </li>
-                            @endcan
+                            {{-- @can('handling-dispositions.view') --}}
+                            <li><a href="{{ route('client-requests.index') }}">Book Requests</a></li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
+
+
+                    {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
+                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                            <div class="menu-icon">
+                                <i class="fs-20 fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <span class="nav-text mx-2">Sales & Billing</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            {{-- @can('waste-types.view') --}}
+                            <li><a href="{{ route('sales.index') }}">Sales</a></li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('hazard-classes.view') --}}
+                            <li><a href="{{ route('invoices.index') }}">Invoices</a></li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('handling-dispositions.view') --}}
+                            <li><a href="{{ route('payments.index') }}">Payments</a></li>
+                            {{-- @endcan --}}
                         </ul>
                     </li>
                     {{-- @endcanany --}}
@@ -284,9 +307,9 @@
                     @canany(['reports.view'])
                         <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
                                 <div class="menu-icon">
-                                    <i class="fs-20 mx-2 fa-solid fa-file-invoice"></i>
+                                    <i class="fs-20 fa-solid fa-file-invoice"></i>
                                 </div>
-                                <span class="nav-text">Reports</span>
+                                <span class="nav-text mx-2">Reports</span>
                             </a>
                             <ul aria-expanded="false">
                                 @can('reports.view')
@@ -306,9 +329,9 @@
                     {{-- @canany(['users.view', 'roles.view', 'permissions.view']) --}}
                     <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
                             <div class="menu-icon">
-                                <i class="fs-20 mx-2 fa-solid fa-gears"></i>
+                                <i class="fs-20 fa-solid fa-gears"></i>
                             </div>
-                            <span class="nav-text">Settings</span>
+                            <span class="nav-text mx-2">Settings</span>
                         </a>
                         <ul aria-expanded="false">
                             {{-- @can('users.view') --}}

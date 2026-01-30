@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UsesPrimaryUuid;
 
-class ClientRequest extends Model
+class Sale extends Model
 {
     use HasFactory, UsesPrimaryUuid;
 
@@ -19,9 +19,9 @@ class ClientRequest extends Model
         return $this->belongsTo(Registration::class, 'client_id', 'reg_id');
     }
 
-    public function subject()
+    public function clientRequest()
     {
-        return $this->belongsTo(Subject::class, 'subject_id');
+        return $this->belongsTo(ClientRequest::class, 'request_id', 'request_id');
     }
 
     public function book()
@@ -29,9 +29,9 @@ class ClientRequest extends Model
         return $this->belongsTo(Book::class, 'book_id', 'book_id');
     }
 
-    public function level()
+    public function zso()
     {
-        return $this->belongsTo(Level::class, 'level_id');
+        return $this->belongsTo(ZonalSalesOfficer::class, 'zonal_sales_officer_id');
     }
 
     public function createdBy()
@@ -44,18 +44,18 @@ class ClientRequest extends Model
         parent::boot();
 
         static::creating(function (self $routine) {
-            $routine->request_id =  $routine->generateRequestId();
+            $routine->sales_id =  $routine->generateSalesId();
         });
     }
 
-    public function generateRequestId()
+    public function generateSalesId()
     {
-        $request_id = rand(10000000, 99999999);
+        $sales_id = rand(10000000, 99999999);
 
-        while (self::where('request_id', $request_id)->exists()) {
-            $this->generateRequestId();
+        while (self::where('sales_id', $sales_id)->exists()) {
+            $this->generateSalesId();
         }
 
-        return $request_id;
+        return $sales_id;
     }
 }

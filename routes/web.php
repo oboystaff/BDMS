@@ -16,6 +16,10 @@ use App\Http\Controllers\Requisition;
 use App\Http\Controllers\BookReturn;
 use App\Http\Controllers\School;
 use App\Http\Controllers\Bookshop;
+use App\Http\Controllers\ClientRequest;
+use App\Http\Controllers\Sales;
+use App\Http\Controllers\Invoice;
+use App\Http\Controllers\Payment;
 
 
 
@@ -162,4 +166,46 @@ Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function 
     Route::get('/show/{bookshop}', [Bookshop\BookshopController::class, 'show'])->name('bookshops.show');
     Route::get('/edit/{bookshop}', [Bookshop\BookshopController::class, 'edit'])->name('bookshops.edit');
     Route::post('/update/{bookshop}', [Bookshop\BookshopController::class, 'update'])->name('bookshops.update');
+});
+
+Route::group(['prefix' => 'client-request', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [ClientRequest\ClientRequestController::class, 'index'])->name('client-requests.index');
+    Route::get('/create', [ClientRequest\ClientRequestController::class, 'create'])->name('client-requests.create');
+    Route::post('/create', [ClientRequest\ClientRequestController::class, 'store'])->name('client-requests.store');
+    Route::get('/show/{clientRequest}', [ClientRequest\ClientRequestController::class, 'show'])->name('client-requests.show');
+    Route::get('/edit/{clientRequest}', [ClientRequest\ClientRequestController::class, 'edit'])->name('client-requests.edit');
+    Route::post('/update/{clientRequest}', [ClientRequest\ClientRequestController::class, 'update'])->name('client-requests.update');
+    Route::get('/book', [ClientRequest\ClientRequestController::class, 'book_request'])->name('client-requests.book_request');
+    Route::get('/make-request/{book}', [ClientRequest\ClientRequestController::class, 'create'])->name('client-requests.make_request');
+});
+
+Route::group(['prefix' => 'sales', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Sales\SalesController::class, 'index'])->name('sales.index');
+    Route::get('/create', [Sales\SalesController::class, 'create'])->name('sales.create');
+    Route::post('/create', [Sales\SalesController::class, 'store'])->name('sales.store');
+    Route::get('/show/{sale}', [Sales\SalesController::class, 'show'])->name('sales.show');
+    Route::get('/edit/{sale}', [Sales\SalesController::class, 'edit'])->name('sales.edit');
+    Route::post('/update/{sale}', [Sales\SalesController::class, 'update'])->name('sales.update');
+    Route::get('/client/request', [Sales\SalesController::class, 'client_request'])->name('sales.client_request');
+    Route::get('/make/sales/{clientRequest}', [Sales\SalesController::class, 'make_sales'])->name('sales.make_sales');
+    Route::get('/confirm/distribution/{sale}', [Sales\SalesController::class, 'confirm_distribution'])->name('sales.confirm');
+    Route::post('/confirm/data/{sale}', [Sales\SalesController::class, 'confirm_data'])->name('sales.confirm_data');
+});
+
+Route::group(['prefix' => 'invoice', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Invoice\InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/create', [Invoice\InvoiceController::class, 'create'])->name('invoices.create');
+    Route::post('/create', [Invoice\InvoiceController::class, 'store'])->name('invoices.store');
+    Route::get('/show/{invoice}', [Invoice\InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/edit/{invoice}', [Invoice\InvoiceController::class, 'edit'])->name('invoices.edit');
+    Route::post('/update/{invoice}', [Invoice\InvoiceController::class, 'update'])->name('invoices.update');
+});
+
+Route::group(['prefix' => 'payment', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Payment\PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/create/{invoice}', [Payment\PaymentController::class, 'create'])->name('payments.create');
+    Route::post('/create', [Payment\PaymentController::class, 'store'])->name('payments.store');
+    Route::get('/show/{payment}', [Payment\PaymentController::class, 'show'])->name('payments.show');
+    Route::get('/edit/{payment}', [Payment\PaymentController::class, 'edit'])->name('payments.edit');
+    Route::post('/update/{payment}', [Payment\PaymentController::class, 'update'])->name('payments.update');
 });
