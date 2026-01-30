@@ -7,15 +7,39 @@ use App\Http\Requests\Payment\CreatePaymentRequest;
 use App\Models\ClientRequest;
 use App\Models\Invoice;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $payments = Payment::orderBy('created_at', 'DESC')->get();
+        $payments = Payment::orderBy('created_at', 'DESC')
+            ->when($request->display == "daily", function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
+            ->when($request->display == "weekly", function ($query) {
+                $query->whereBetween('created_at', [
+                    Carbon::now()->startOfWeek(),
+                    Carbon::now()->endOfWeek()
+                ]);
+            })
+            ->when($request->display == "monthly", function ($query) {
+                $query->whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year);
+            })
+            ->when($request->display == "yearly", function ($query) {
+                $query->whereYear('created_at', Carbon::now()->year);
+            })
+            ->get();
 
-        return view('payments.index', compact('payments'));
+        $amount = $payments->sum('amount');
+
+        $total = [
+            'amount' => isset($amount) ? number_format($amount, 2) : 0
+        ];
+
+        return view('payments.index', compact('payments', 'total'));
     }
 
     public function create(Invoice $invoice)

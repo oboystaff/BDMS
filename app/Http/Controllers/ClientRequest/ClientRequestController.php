@@ -9,13 +9,28 @@ use App\Models\Book;
 use App\Models\ClientRequest;
 use App\Models\Registration;
 use Illuminate\Http\Request;
-use Spatie\FlareClient\Http\Client;
+use Carbon\Carbon;
+
 
 class ClientRequestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clientRequests = ClientRequest::orderBy('created_at', 'DESC')->get();
+        $clientRequests = ClientRequest::orderBy('created_at', 'DESC')
+            ->when($request->display == "pending", function ($query) {
+                $query->where('status', 'Pending');
+            })
+            ->when($request->display == "weekly", function ($query) {
+                $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            })
+            ->when($request->display == "monthly", function ($query) {
+                $query->whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year);
+            })
+            ->when($request->display == "yearly", function ($query) {
+                $query->whereYear('created_at', Carbon::now()->year);
+            })
+            ->get();
 
         return view('client-requests.index', compact('clientRequests'));
     }

@@ -124,6 +124,14 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7"></th>
+                                            <th>Total:</th>
+                                            <th>{{ $total['amount'] }}</th>
+                                            <th colspan="5"></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

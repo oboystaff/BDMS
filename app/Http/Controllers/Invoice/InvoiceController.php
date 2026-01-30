@@ -4,15 +4,40 @@ namespace App\Http\Controllers\Invoice;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::orderBy('created_at', 'DESC')->get();
+        $invoices = Invoice::orderBy('created_at', 'DESC')
+            ->when($request->display == "daily", function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
+            ->when($request->display == "weekly", function ($query) {
+                $query->whereBetween('created_at', [
+                    Carbon::now()->startOfWeek(),
+                    Carbon::now()->endOfWeek()
+                ]);
+            })
+            ->when($request->display == "monthly", function ($query) {
+                $query->whereMonth('created_at', Carbon::now()->month)
+                    ->whereYear('created_at', Carbon::now()->year);
+            })
+            ->when($request->display == "yearly", function ($query) {
+                $query->whereYear('created_at', Carbon::now()->year);
+            })
+            ->get();
 
-        return view('invoices.index', compact('invoices'));
+        $amount = $invoices->sum('amount');
+
+        $total = [
+            'amount' => isset($amount) ? number_format($amount, 2) : 0
+        ];
+
+        return view('invoices.index', compact('invoices', 'total'));
     }
 
     public function create() {}

@@ -212,6 +212,26 @@
                                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <div class="mb-4 col-md-6">
+                                    <label class="form-label">Status</label>
+                                    <select name="status"
+                                        class="default-select form-control @error('status') is-invalid @enderror">
+                                        <option disabled selected>Select Status</option>
+                                        <option value="Active"
+                                            {{ old('status', $school->status ?? '') == 'Active' ? 'selected' : '' }}>Active
+                                        </option>
+                                        <option value="InActive"
+                                            {{ old('status', $school->status ?? '') == 'InActive' ? 'selected' : '' }}>In
+                                            Active</option>
+                                    </select>
+
+                                    @error('status')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Update</button>

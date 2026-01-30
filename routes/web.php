@@ -43,6 +43,7 @@ Route::get('/logout', [Auth\LoginController::class, 'logout'])->name('auth.logou
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/operational', [Dashboard\DashboardController::class, 'operational'])->name('dashboard.operational');
     Route::get('/financial', [Dashboard\DashboardController::class, 'financial'])->name('dashboard.financial');
+    Route::get('/receivable', [Dashboard\DashboardController::class, 'receivable'])->name('dashboard.receivable');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {

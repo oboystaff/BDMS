@@ -32,7 +32,8 @@ class UpdateBookshopRequest extends FormRequest
             'territory_id' => ['required', 'string', 'exists:territories,id'],
             'zonal_sales_officer_id' => ['required', 'string', 'exists:zonal_sales_officers,id'],
             'latitude' => ['required', 'numeric', 'between:-180,180'],
-            'longitude' => ['required', 'numeric', 'required_with:longitude', 'between:-90,90']
+            'longitude' => ['required', 'numeric', 'required_with:longitude', 'between:-90,90'],
+            'status' => ['required', 'string', 'in:Active,InActive']
         ];
     }
 }

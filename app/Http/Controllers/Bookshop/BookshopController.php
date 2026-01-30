@@ -21,7 +21,12 @@ class BookshopController extends Controller
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('region_id', $request->user()->region_id);
             })
-            ->where('status', 'Active')
+            ->when($request->display == "active", function ($query) {
+                $query->where('status', 'Active');
+            })
+            ->when($request->display == "inactive", function ($query) {
+                $query->where('status', 'InActive');
+            })
             ->where('reg_type', 'bookshop')
             ->get();
 
