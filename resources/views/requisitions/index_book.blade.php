@@ -58,6 +58,8 @@
                                             <th>Unit Price</th>
                                             <th>Quantity</th>
                                             <th>Min Stock Level</th>
+                                            <th>Author</th>
+                                            <th>Title</th>
                                             <th>Created By</th>
                                             <th>Created Date</th>
                                             <th>Action</th>
@@ -72,6 +74,8 @@
                                                 <td>{{ $book->unit_price }}</td>
                                                 <td>{{ $book->quantity }}</td>
                                                 <td>{{ $book->minimum_stock_level }}</td>
+                                                <td>{{ $book->author }}</td>
+                                                <td>{{ $book->title }}</td>
                                                 <td>{{ $book->createdBy->name ?? 'N/A' }}</td>
                                                 <td>{{ $book->created_at }}</td>
                                                 <td>

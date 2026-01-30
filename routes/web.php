@@ -20,6 +20,7 @@ use App\Http\Controllers\ClientRequest;
 use App\Http\Controllers\Sales;
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Payment;
+use App\Http\Controllers\Report;
 
 
 
@@ -105,26 +106,28 @@ Route::group(['prefix' => 'book', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/edit/{book}', [Book\BookController::class, 'edit'])->name('books.edit');
     Route::post('/create', [Book\BookController::class, 'store'])->name('books.store');
     Route::post('/update/{book}', [Book\BookController::class, 'update'])->name('books.update');
-    Route::get('/new/stock/{book}', [Book\BookController::class, 'new_stock'])->name('books.new_stock');
-    Route::post('/new/stock/{book}', [Book\BookController::class, 'save_new_stock'])->name('books.save_new_stock');
 });
 
 Route::group(['prefix' => 'inventory', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/', [Inventory\InventoryController::class, 'index'])->name('inventories.index');
     Route::get('/create', [Inventory\InventoryController::class, 'create'])->name('inventories.create');
-    Route::get('/show/{inventory}', [Inventory\InventoryController::class, 'show'])->name('inventories.show');
+    Route::get('/show/{book}', [Inventory\InventoryController::class, 'show'])->name('inventories.show');
     Route::get('/edit/{inventory}', [Inventory\InventoryController::class, 'edit'])->name('inventories.edit');
     Route::post('/create', [Inventory\InventoryController::class, 'store'])->name('inventories.store');
     Route::post('/update/{inventory}', [Inventory\InventoryController::class, 'update'])->name('inventories.update');
+    Route::get('/new/stock/{book}', [Inventory\InventoryController::class, 'new_stock'])->name('inventories.new_stock');
+    Route::post('/new/stock/{book}', [Inventory\InventoryController::class, 'save_new_stock'])->name('inventories.save_new_stock');
 });
 
 Route::group(['prefix' => 'new-stock', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/', [NewStock\NewStockController::class, 'index'])->name('new-stocks.index');
     Route::get('/create', [NewStock\NewStockController::class, 'create'])->name('new-stocks.create');
-    Route::get('/show/{newStock}', [NewStock\NewStockController::class, 'show'])->name('new-stocks.show');
+    Route::get('/show/{book}', [NewStock\NewStockController::class, 'show'])->name('new-stocks.show');
     Route::get('/edit/{newStock}', [NewStock\NewStockController::class, 'edit'])->name('new-stocks.edit');
     Route::post('/create', [NewStock\NewStockController::class, 'store'])->name('new-stocks.store');
     Route::post('/update/{newStock}', [NewStock\NewStockController::class, 'update'])->name('new-stocks.update');
+    Route::get('/new/stock/{book}', [NewStock\NewStockController::class, 'new_stock'])->name('new-stocks.new_stock');
+    Route::post('/new/stock/{book}', [NewStock\NewStockController::class, 'save_new_stock'])->name('new-stocks.save_new_stock');
 });
 
 Route::group(['prefix' => 'requisition', 'middleware' => 'auth:sanctum'], function () {
@@ -148,6 +151,7 @@ Route::group(['prefix' => 'book-return', 'middleware' => 'auth:sanctum'], functi
     Route::get('/edit/{bookReturn}', [BookReturn\BookReturnController::class, 'edit'])->name('book-returns.edit');
     Route::post('/create', [BookReturn\BookReturnController::class, 'store'])->name('book-returns.store');
     Route::post('/update/{bookReturn}', [BookReturn\BookReturnController::class, 'update'])->name('book-returns.update');
+    Route::get('/requisition', [BookReturn\BookReturnController::class, 'requisition'])->name('book-returns.requisition');
 });
 
 Route::group(['prefix' => 'school', 'middleware' => 'auth:sanctum'], function () {
@@ -208,4 +212,18 @@ Route::group(['prefix' => 'payment', 'middleware' => 'auth:sanctum'], function (
     Route::get('/show/{payment}', [Payment\PaymentController::class, 'show'])->name('payments.show');
     Route::get('/edit/{payment}', [Payment\PaymentController::class, 'edit'])->name('payments.edit');
     Route::post('/update/{payment}', [Payment\PaymentController::class, 'update'])->name('payments.update');
+});
+
+Route::group(['prefix' => 'report', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/school-report', [Report\SchoolReportController::class, 'index'])->name('school-reports.index');
+    Route::get('/bookshop-report', [Report\BookshopReportController::class, 'index'])->name('bookshop-reports.index');
+    Route::get('/book-report', [Report\BookReportController::class, 'index'])->name('book-reports.index');
+    Route::get('/book-requisition-report', [Report\BookRequisitionReportController::class, 'index'])->name('requisition-reports.index');
+    Route::get('/book-return-report', [Report\BookReturnReportController::class, 'index'])->name('return-reports.index');
+    Route::get('/inventory-report', [Report\InventoryReportController::class, 'index'])->name('inventory-reports.index');
+    Route::get('/sales-report', [Report\SalesReportController::class, 'index'])->name('sales-reports.index');
+    Route::get('/invoice-report', [Report\InvoiceReportController::class, 'index'])->name('invoice-reports.index');
+    Route::get('/payment-report', [Report\PaymentReportController::class, 'index'])->name('payment-reports.index');
+    Route::get('/request-report', [Report\RequestReportController::class, 'index'])->name('request-reports.index');
+    Route::get('/receivable-report', [Report\ReceivableReportController::class, 'index'])->name('receivable-reports.index');
 });

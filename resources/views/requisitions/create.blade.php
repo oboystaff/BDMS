@@ -90,6 +90,32 @@
                                         @enderror
                                     </div>
 
+                                    <div class="mb-4 col-md-6">
+                                        <label class="form-label">Author</label>
+                                        <input type="text" name="author"
+                                            class="form-control @error('author') is-invalid @enderror" placeholder="Author"
+                                            value="{{ $book->author }}" readonly>
+
+                                        @error('author')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-4 col-md-6">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" name="title"
+                                            class="form-control @error('title') is-invalid @enderror" placeholder="Title"
+                                            value="{{ $book->title }}" readonly>
+
+                                        @error('title')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+
                                     <div class="alert alert-primary alert-dismissible fade show">
                                         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
                                             stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"

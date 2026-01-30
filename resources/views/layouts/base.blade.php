@@ -304,27 +304,30 @@
                     {{-- @endcanany --}}
 
 
-                    @canany(['reports.view'])
-                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                                <div class="menu-icon">
-                                    <i class="fs-20 fa-solid fa-file-invoice"></i>
-                                </div>
-                                <span class="nav-text mx-2">Reports</span>
-                            </a>
-                            <ul aria-expanded="false">
-                                @can('reports.view')
-                                    <li><a href="{{ route('customer-reports.index') }}">Customer Report</a></li>
-                                    <li><a href="{{ route('vehicle-reports.index') }}">Vehicle Report</a></li>
-                                    <li><a href="{{ route('driver-reports.index') }}">Driver Report</a></li>
-                                    <li><a href="{{ route('transporter-reports.index') }}">Transporter Report</a></li>
-                                    <li><a href="{{ route('schedule-reports.index') }}">Schedule Report</a></li>
-                                    <li><a href="{{ route('pickup-reports.index') }}">Pickup Report</a></li>
-                                    <li><a href="{{ route('waste-management-reports.index') }}">Waste Management</a></li>
-                                    <li><a href="{{ route('waste-tracking-reports.index') }}">Waste Tracking Log</a></li>
-                                @endcan
-                            </ul>
-                        </li>
-                    @endcanany
+                    {{-- @canany(['reports.view']) --}}
+                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                            <div class="menu-icon">
+                                <i class="fs-20 fa-solid fa-file-invoice"></i>
+                            </div>
+                            <span class="nav-text mx-2">Reports</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            {{-- @can('reports.view') --}}
+                            <li><a href="{{ route('school-reports.index') }}">School Report</a></li>
+                            <li><a href="{{ route('bookshop-reports.index') }}">Bookshop Report</a></li>
+                            <li><a href="{{ route('book-reports.index') }}">Book Report</a></li>
+                            <li><a href="{{ route('requisition-reports.index') }}">Book Requisition Report</a></li>
+                            <li><a href="{{ route('return-reports.index') }}">Book Return Report</a></li>
+                            <li><a href="{{ route('inventory-reports.index') }}">Inventory Report</a></li>
+                            <li><a href="{{ route('sales-reports.index') }}">Sales Report</a></li>
+                            <li><a href="{{ route('invoice-reports.index') }}">Invoice Report</a></li>
+                            <li><a href="{{ route('payment-reports.index') }}">Payment Report</a></li>
+                            <li><a href="{{ route('request-reports.index') }}">Request Report</a></li>
+                            <li><a href="{{ route('receivable-reports.index') }}">Receivable Report</a></li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
 
                     {{-- @canany(['users.view', 'roles.view', 'permissions.view']) --}}
                     <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">

@@ -93,4 +93,17 @@ class BookReturnController extends Controller
     public function edit() {}
 
     public function update() {}
+
+    public function requisition(Request $request)
+    {
+        $requisitions = BookRequisition::orderBy('created_at', 'DESC')
+            ->when(!empty($request->user()->zso_id), function ($query) use ($request) {
+                $query->where('created_by', $request->user()->id);
+            })
+            ->where('status', 'Approved')
+            ->where('quantity', '>', 0)
+            ->get();
+
+        return view('returns.requisition', compact('requisitions'));
+    }
 }

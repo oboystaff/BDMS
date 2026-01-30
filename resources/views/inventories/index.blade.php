@@ -26,9 +26,9 @@
                         <h4 class="card-title">View Book Inventories</h4>
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <a href="{{ route('books.create') }}" class="btn btn-primary btn-sm ms-2">+ Add Book</a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="tab-content" id="myTabContent-3">
@@ -44,6 +44,8 @@
                                             <th>Unit Price</th>
                                             <th>Quantity</th>
                                             <th>Min Stock Level</th>
+                                            <th>author</th>
+                                            <th>Title</th>
                                             <th>Status</th>
                                             <th>Created By</th>
                                             <th>Created Date</th>
@@ -59,6 +61,8 @@
                                                 <td>{{ $book->unit_price }}</td>
                                                 <td>{{ $book->quantity }}</td>
                                                 <td>{{ $book->minimum_stock_level }}</td>
+                                                <td>{{ $book->author }}</td>
+                                                <td>{{ $book->title }}</td>
                                                 <td>
                                                     @if ($book->quantity > $book->minimum_stock_level)
                                                         <span class="text-success fw-bold">In Stock</span>
@@ -94,10 +98,11 @@
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             <div class="py-2">
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('books.show', $book) }}">View
+                                                                    href="{{ route('inventories.show', $book) }}">View
                                                                 </a>
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('books.new_stock', $book) }}">New Stock
+                                                                    href="{{ route('inventories.new_stock', $book) }}">New
+                                                                    Stock
                                                                 </a>
                                                             </div>
                                                         </div>

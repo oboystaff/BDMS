@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Book;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Book\CreateBookRequest;
-use App\Http\Requests\Book\NewStockBookRequest;
 use App\Http\Requests\Book\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Level;
@@ -36,6 +35,7 @@ class BookController extends Controller
 
         $book = Book::where('subject_id', $data['subject_id'])
             ->where('level_id', $data['level_id'])
+            ->where('author', $data['author'])
             ->first();
 
         if (empty($book)) {
@@ -74,23 +74,5 @@ class BookController extends Controller
         $book->update($request->validated());
 
         return redirect()->route('books.index')->with('status', 'Book updated successfully.');
-    }
-
-    public function new_stock(Book $book)
-    {
-        return view('books.new_stock', compact('book'));
-    }
-
-    public function save_new_stock(NewStockBookRequest $request, Book $book)
-    {
-        $data = $request->validated();
-
-        $bookData = [
-            'quantity' => $data['quantity']
-        ];
-
-        $book->update($bookData);
-
-        return redirect()->route('books.index')->with('status', 'New stock added successfully.');
     }
 }

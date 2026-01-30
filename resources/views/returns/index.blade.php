@@ -41,7 +41,7 @@
                     </div>
 
                     <div>
-                        <a href="{{ route('requisitions.index') }}" class="btn btn-primary btn-sm ms-2">+ Add
+                        <a href="{{ route('book-returns.requisition') }}" class="btn btn-primary btn-sm ms-2">+ Add
                             Book Return</a>
                     </div>
                 </div>

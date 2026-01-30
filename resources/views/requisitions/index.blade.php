@@ -124,12 +124,6 @@
                                                                         Request
                                                                     </a>
                                                                 @endif
-                                                                @if ($requisition->status === 'Approved')
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('book-returns.create', $requisition) }}">Book
-                                                                        Return
-                                                                    </a>
-                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

@@ -26,7 +26,9 @@ class CreateBookRequest extends FormRequest
             'level_id' => ['required', 'string', 'exists:levels,id'],
             'unit_price' => ['required', 'numeric'],
             'quantity' => ['required', 'numeric'],
-            'minimum_stock_level' => ['required', 'numeric']
+            'minimum_stock_level' => ['required', 'numeric'],
+            'author' => ['required', 'string'],
+            'title' => ['required', 'string']
         ];
     }
 }

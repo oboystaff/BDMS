@@ -101,6 +101,32 @@
                                         </span>
                                     @enderror
                                 </div>
+
+                                <div class="mb-4 col-md-6">
+                                    <label class="form-label">Author</label>
+                                    <input type="text" name="author"
+                                        class="form-control @error('author') is-invalid @enderror" placeholder="Author"
+                                        value="{{ $book->author }}">
+
+                                    @error('author')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4 col-md-6">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" name="title"
+                                        class="form-control @error('title') is-invalid @enderror" placeholder="Title"
+                                        value="{{ $book->title }}">
+
+                                    @error('title')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Update</button>
