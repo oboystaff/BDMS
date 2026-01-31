@@ -114,6 +114,10 @@
                                                                 <a class="dropdown-item"
                                                                     href="{{ route('schools.edit', $school) }}">Edit
                                                                 </a>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('schools.make_request', $school) }}">Make
+                                                                    Request
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>

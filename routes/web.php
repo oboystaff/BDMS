@@ -164,6 +164,7 @@ Route::group(['prefix' => 'school', 'middleware' => 'auth:sanctum'], function ()
     Route::get('/show/{school}', [School\SchoolController::class, 'show'])->name('schools.show');
     Route::get('/edit/{school}', [School\SchoolController::class, 'edit'])->name('schools.edit');
     Route::post('/update/{school}', [School\SchoolController::class, 'update'])->name('schools.update');
+    Route::get('/make/request/{school}', [School\SchoolController::class, 'make_request'])->name('schools.make_request');
 });
 
 Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function () {
@@ -173,6 +174,7 @@ Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function 
     Route::get('/show/{bookshop}', [Bookshop\BookshopController::class, 'show'])->name('bookshops.show');
     Route::get('/edit/{bookshop}', [Bookshop\BookshopController::class, 'edit'])->name('bookshops.edit');
     Route::post('/update/{bookshop}', [Bookshop\BookshopController::class, 'update'])->name('bookshops.update');
+    Route::get('/make/request/{bookshop}', [Bookshop\BookshopController::class, 'make_request'])->name('bookshops.make_request');
 });
 
 Route::group(['prefix' => 'client-request', 'middleware' => 'auth:sanctum'], function () {
@@ -182,8 +184,9 @@ Route::group(['prefix' => 'client-request', 'middleware' => 'auth:sanctum'], fun
     Route::get('/show/{clientRequest}', [ClientRequest\ClientRequestController::class, 'show'])->name('client-requests.show');
     Route::get('/edit/{clientRequest}', [ClientRequest\ClientRequestController::class, 'edit'])->name('client-requests.edit');
     Route::post('/update/{clientRequest}', [ClientRequest\ClientRequestController::class, 'update'])->name('client-requests.update');
-    Route::get('/book', [ClientRequest\ClientRequestController::class, 'book_request'])->name('client-requests.book_request');
+    Route::get('/book/{client}', [ClientRequest\ClientRequestController::class, 'make_request'])->name('client-requests.make_book_request');
     Route::get('/make-request/{book}', [ClientRequest\ClientRequestController::class, 'create'])->name('client-requests.make_request');
+    Route::post('/requests/preview', [ClientRequest\ClientRequestController::class, 'preview'])->name('client-requests.preview');
 });
 
 Route::group(['prefix' => 'sales', 'middleware' => 'auth:sanctum'], function () {

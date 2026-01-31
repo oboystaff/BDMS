@@ -84,7 +84,11 @@ class SalesController extends Controller
 
     public function client_request()
     {
-        $clientRequests = ClientRequest::orderBy('created_at', 'DESC')->get();
+        $clientRequests = ClientRequest::orderBy('created_at', 'DESC')
+            ->whereNotNull('book_id')
+            ->whereNotNull('subject_id')
+            ->whereNotNull('level_id')
+            ->get();
 
         return view('sales.client-request', compact('clientRequests'));
     }

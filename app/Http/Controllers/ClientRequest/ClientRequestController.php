@@ -10,6 +10,7 @@ use App\Models\ClientRequest;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 class ClientRequestController extends Controller
@@ -61,24 +62,53 @@ class ClientRequestController extends Controller
         return view('client-requests.create', compact('book', 'clients'));
     }
 
-    public function store(CreateClientRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        $data['created_by'] = $request->user()->id;
-        $data['status'] = 'Pending';
+        $preview = session('request_preview');
 
-        $pendingRequest = ClientRequest::where('client_id', $data['client_id'])
-            ->where('book_id', $data['book_id'])
-            ->where('status', 'Pending')
-            ->first();
-
-        if (!empty($pendingRequest)) {
-            return redirect()->route('client-requests.index')->with('error', 'You already have pending request for the selected book, contact the admin.');
+        if (!$preview) {
+            return redirect()->route('schools.index')
+                ->withErrors('Session expired. Please try again.');
         }
 
-        ClientRequest::create($data);
+        $requestId = $this->generateRequestId();
 
-        return redirect()->route('client-requests.index')->with('status', 'Book request created successfully.');
+        DB::transaction(function () use ($preview, $request, $requestId) {
+            $draftRequest = ClientRequest::where('client_id', $preview['client_id'])
+                ->whereNull('book_id')
+                ->whereNull('subject_id')
+                ->whereNull('level_id')
+                ->whereNull('unit_price')
+                ->whereNull('quantity')
+                ->first();
+
+            $requestId = $draftRequest
+                ? $draftRequest->request_id
+                : $this->generateRequestId();
+
+            if ($draftRequest) {
+                ClientRequest::where('request_id', $requestId)->delete();
+            }
+
+            foreach ($preview['items'] as $item) {
+                ClientRequest::create([
+                    'request_id' => $requestId,
+                    'client_id'  => $preview['client_id'],
+                    'book_id'    => $item['book_id'],
+                    'subject_id' => $item['subject_id'],
+                    'level_id'   => $item['level_id'],
+                    'unit_price' => $item['unit_price'],
+                    'quantity'   => $item['quantity'],
+                    'amount'     => $item['amount'],
+                    'status'     => 'Pending',
+                    'created_by' => $request->user()->id
+                ]);
+            }
+        });
+
+        session()->forget('request_preview');
+
+        return redirect()->route('client-requests.index')->with('status', 'Book request submitted successfully.');
     }
 
     public function show(ClientRequest $clientRequest)
@@ -90,6 +120,15 @@ class ClientRequestController extends Controller
     {
         if (!auth()->user()->can('requests.update')) {
             abort(403, 'Unauthorized action.');
+        }
+
+        if (
+            is_null($clientRequest->book_id) &&
+            is_null($clientRequest->subject_id) &&
+            is_null($clientRequest->level_id)
+        ) {
+            $client = Registration::where('reg_id', $clientRequest->client_id)->first();
+            return redirect()->route('client-requests.make_book_request', $client);
         }
 
         $clients = Registration::orderBy('created_at', 'DESC')
@@ -115,10 +154,76 @@ class ClientRequestController extends Controller
         return redirect()->route('client-requests.index')->with('status', 'Book request updated successfully.');
     }
 
-    public function book_request()
+    public function make_request(Registration $client)
     {
         $books = Book::orderBy('created_at', 'DESC')->get();
 
-        return view('client-requests.book', compact('books'));
+        return view('client-requests.make_request', compact('client', 'books'));
+    }
+
+    public function preview(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required',
+            'books' => 'required|array',
+        ]);
+
+        $selectedBooks = collect($request->books)
+            ->filter(fn($book) => isset($book['selected']) && !empty($book['quantity']));
+
+        if ($selectedBooks->isEmpty()) {
+            return back()->withErrors('Please select at least one book with quantity.');
+        }
+
+        $items = [];
+        $grandTotal = 0;
+
+        foreach ($selectedBooks as $bookId => $data) {
+            $book = Book::with(['subject', 'level'])->findOrFail($bookId);
+
+            $quantity = (int) $data['quantity'];
+
+            if ($quantity > $book->quantity) {
+                return back()->withErrors(
+                    "Requested quantity for {$book->subject->name} ({$book->level->name}) exceeds available stock ({$book->quantity})."
+                );
+            }
+
+            $amount = $book->unit_price * $quantity;
+
+            $items[] = [
+                'book_id'    => $book->book_id,
+                'subject_id' => $book->subject_id,
+                'level_id'   => $book->level_id,
+                'subject'    => $book->subject->name,
+                'level'      => $book->level->name,
+                'author'     => $book->author,
+                'unit_price' => $book->unit_price,
+                'quantity'   => $quantity,
+                'amount'     => $amount,
+            ];
+
+            $grandTotal += $amount;
+        }
+
+        // Store in session for final submission
+        session([
+            'request_preview' => [
+                'client_id' => $request->client_id,
+                'items' => $items,
+                'grand_total' => $grandTotal,
+            ]
+        ]);
+
+        return view('client-requests.preview', compact('items', 'grandTotal'));
+    }
+
+    private function generateRequestId()
+    {
+        do {
+            $requestId = rand(10000000, 99999999);
+        } while (ClientRequest::where('request_id', $requestId)->exists());
+
+        return $requestId;
     }
 }

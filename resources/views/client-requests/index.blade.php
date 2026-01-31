@@ -40,10 +40,10 @@
                         <h4 class="card-title">View Book Request</h4>
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <a href="{{ route('client-requests.book_request') }}" class="btn btn-primary btn-sm ms-2">+ Add
                             Book Request</a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="tab-content" id="myTabContent-3">
@@ -74,11 +74,11 @@
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $clientRequest->client_id }}</td>
                                                 <td>{{ $clientRequest->client->name ?? 'N/A' }}</td>
-                                                <td>{{ $clientRequest->book_id }}</td>
+                                                <td>{{ $clientRequest->book_id ?? 'N/A' }}</td>
                                                 <td>{{ $clientRequest->subject->name ?? 'N/A' }}</td>
                                                 <td>{{ $clientRequest->level->name ?? 'N/A' }}</td>
-                                                <td>{{ $clientRequest->unit_price }}</td>
-                                                <td>{{ $clientRequest->quantity }}</td>
+                                                <td>{{ $clientRequest->unit_price ?? '0.00' }}</td>
+                                                <td>{{ $clientRequest->quantity ?? '0.00' }}</td>
                                                 <td>{{ number_format($clientRequest->amount, 2) }}</td>
                                                 <td>{{ $clientRequest->status }}</td>
                                                 <td>{{ $clientRequest->createdBy->name ?? 'N/A' }}</td>

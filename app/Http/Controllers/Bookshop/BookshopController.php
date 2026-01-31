@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Bookshop\CreateBookshopRequest;
 use App\Http\Requests\Bookshop\UpdateBookshopRequest;
 use App\Models\Registration;
+use App\Models\Book;
 use App\Models\Region;
 use App\Models\Zone;
 use App\Models\Territory;
@@ -106,5 +107,12 @@ class BookshopController extends Controller
         $bookshop->update($request->validated());
 
         return redirect()->route('bookshops.index')->with('status', 'Bookshop record updated successfully.');
+    }
+
+    public function make_request(Registration $bookshop)
+    {
+        $books = Book::orderBy('created_at', 'DESC')->get();
+
+        return view('bookshops.make_request', compact('bookshop', 'books'));
     }
 }

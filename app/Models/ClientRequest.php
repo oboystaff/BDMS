@@ -39,23 +39,23 @@ class ClientRequest extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function (self $routine) {
-            $routine->request_id =  $routine->generateRequestId();
-        });
-    }
+    //     static::creating(function (self $routine) {
+    //         $routine->request_id =  $routine->generateRequestId();
+    //     });
+    // }
 
-    public function generateRequestId()
-    {
-        $request_id = rand(10000000, 99999999);
+    // public function generateRequestId()
+    // {
+    //     $request_id = rand(10000000, 99999999);
 
-        while (self::where('request_id', $request_id)->exists()) {
-            $this->generateRequestId();
-        }
+    //     while (self::where('request_id', $request_id)->exists()) {
+    //         $this->generateRequestId();
+    //     }
 
-        return $request_id;
-    }
+    //     return $request_id;
+    // }
 }

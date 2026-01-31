@@ -11,7 +11,8 @@ use App\Http\Controllers\API\Registration;
 use App\Http\Controllers\API\User;
 use App\Http\Controllers\API\Auth;
 use App\Http\Controllers\API\UserType;
-
+use App\Http\Controllers\API\ClientRequest;
+use Spatie\FlareClient\Http\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,3 +76,9 @@ Route::get('/user-types', [UserType\UserTypeController::class, 'index']);
 Route::get('/user-type/show/{id}', [UserType\UserTypeController::class, 'show']);
 Route::post('/user-type/create', [UserType\UserTypeController::class, 'store']);
 Route::post('/user-type/update/{id}', [UserType\UserTypeController::class, 'update']);
+
+Route::group(['prefix' => 'client-request', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [ClientRequest\ClientRequestController::class, 'index']);
+    Route::get('/show/{id}', [ClientRequest\ClientRequestController::class, 'show']);
+    Route::post('/create', [ClientRequest\ClientRequestController::class, 'store']);
+});

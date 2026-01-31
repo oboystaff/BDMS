@@ -5,8 +5,11 @@ namespace App\Http\Controllers\School;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\School\CreateSchoolRequest;
 use App\Http\Requests\School\UpdateSchoolRequest;
+use App\Models\Book;
+use App\Models\Level;
 use App\Models\Region;
 use App\Models\Registration;
+use App\Models\Subject;
 use App\Models\Territory;
 use App\Models\ZonalSalesOfficer;
 use App\Models\Zone;
@@ -105,5 +108,12 @@ class SchoolController extends Controller
         $school->update($request->validated());
 
         return redirect()->route('schools.index')->with('status', 'School record updated successfully.');
+    }
+
+    public function make_request(Registration $school)
+    {
+        $books = Book::orderBy('created_at', 'DESC')->get();
+
+        return view('schools.make_request', compact('school', 'books'));
     }
 }
