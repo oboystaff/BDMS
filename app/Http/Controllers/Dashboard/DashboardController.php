@@ -165,22 +165,6 @@ class DashboardController extends Controller
             ->groupBy('client_id');
 
         $receivables = DB::table('registrations as r')
-            ->when($request->display == "daily", function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
-            ->when($request->display == "weekly", function ($query) {
-                $query->whereBetween('created_at', [
-                    Carbon::now()->startOfWeek(),
-                    Carbon::now()->endOfWeek()
-                ]);
-            })
-            ->when($request->display == "monthly", function ($query) {
-                $query->whereMonth('created_at', Carbon::now()->month)
-                    ->whereYear('created_at', Carbon::now()->year);
-            })
-            ->when($request->display == "yearly", function ($query) {
-                $query->whereYear('created_at', Carbon::now()->year);
-            })
             ->leftJoinSub($invoiceTotals, 'i', 'r.reg_id', '=', 'i.client_id')
             ->leftJoinSub($paymentTotals, 'p', 'r.reg_id', '=', 'p.client_id')
             ->select(
