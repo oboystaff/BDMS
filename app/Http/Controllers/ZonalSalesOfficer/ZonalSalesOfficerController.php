@@ -14,6 +14,10 @@ class ZonalSalesOfficerController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('zonal_sales_officers.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zonalSalesOfficers = ZonalSalesOfficer::orderBy('created_at', 'DESC')->get();
 
         return view('zonal-sales-officers.index', compact('zonalSalesOfficers'));
@@ -21,6 +25,10 @@ class ZonalSalesOfficerController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('zonal_sales_officers.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('zonal-sales-officers.create');
     }
 
@@ -59,6 +67,10 @@ class ZonalSalesOfficerController extends Controller
 
     public function edit(ZonalSalesOfficer $zonalSalesOfficer)
     {
+        if (!auth()->user()->can('zonal_sales_officers.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('zonal-sales-officers.edit', compact('zonalSalesOfficer'));
     }
 

@@ -16,6 +16,10 @@ class ClientRequestController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('requests.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $clientRequests = ClientRequest::orderBy('created_at', 'DESC')
             ->when($request->display == "pending", function ($query) {
                 $query->where('status', 'Pending');
@@ -37,6 +41,10 @@ class ClientRequestController extends Controller
 
     public function create(Request $request, Book $book)
     {
+        if (!auth()->user()->can('requests.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $clients = Registration::orderBy('created_at', 'DESC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('region_id', $request->user()->region_id);
@@ -80,6 +88,10 @@ class ClientRequestController extends Controller
 
     public function edit(Request $request, ClientRequest $clientRequest)
     {
+        if (!auth()->user()->can('requests.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $clients = Registration::orderBy('created_at', 'DESC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('region_id', $request->user()->region_id);

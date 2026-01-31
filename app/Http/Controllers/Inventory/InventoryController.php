@@ -11,6 +11,10 @@ class InventoryController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('inventories.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $books = Book::orderBy('created_at', 'DESC')->get();
 
         return view('inventories.index', compact('books'));

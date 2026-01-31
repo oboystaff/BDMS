@@ -14,6 +14,10 @@ class BookController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('books.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $books = Book::orderBy('created_at', 'DESC')->get();
 
         return view('books.index', compact('books'));
@@ -21,6 +25,10 @@ class BookController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('books.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $subjects = Subject::orderBy('name', 'ASC')->get();
         $levels = Level::orderBy('name', 'ASC')->get();
 
@@ -63,6 +71,10 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
+        if (!auth()->user()->can('books.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $subjects = Subject::orderBy('name', 'ASC')->get();
         $levels = Level::orderBy('name', 'ASC')->get();
 

@@ -11,6 +11,10 @@ class NewStockController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('new_stocks.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $books = Book::orderBy('created_at', 'DESC')->get();
 
         return view('new-stocks.index', compact('books'));

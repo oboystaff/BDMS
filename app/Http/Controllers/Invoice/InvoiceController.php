@@ -12,6 +12,10 @@ class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('invoices.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $invoices = Invoice::orderBy('created_at', 'DESC')
             ->when($request->display == "daily", function ($query) {
                 $query->whereDate('created_at', Carbon::today());

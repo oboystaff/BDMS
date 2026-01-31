@@ -16,6 +16,10 @@ class SalesController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('sales.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $sales = Sale::orderBy('created_at', 'DESC')->get();
 
         return view('sales.index', compact('sales'));

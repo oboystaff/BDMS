@@ -13,6 +13,10 @@ class ZoneController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('zones.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zones = Zone::orderBy('created_at', 'DESC')->get();
 
         return view('zones.index', compact('zones'));
@@ -20,6 +24,10 @@ class ZoneController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('zones.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
             ->where('status', 'Active')
             ->get();
@@ -44,6 +52,10 @@ class ZoneController extends Controller
 
     public function edit(Zone $zone)
     {
+        if (!auth()->user()->can('zones.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zonalSalesOfficers = ZonalSalesOfficer::orderBy('name', 'ASC')
             ->where('status', 'Active')
             ->get();

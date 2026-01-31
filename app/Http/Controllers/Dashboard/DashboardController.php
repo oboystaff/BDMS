@@ -16,6 +16,10 @@ class DashboardController extends Controller
 {
     public function operational(Request $request)
     {
+        if (!auth()->user()->can('dashboards.operational')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $totalSchool = Registration::where('reg_type', 'school')->count();
         $activeSchool = Registration::where('reg_type', 'school')->where('status', 'Active')->count();
         $inactiveSchool = Registration::where('reg_type', 'school')->where('status', 'InActive')->count();
@@ -59,6 +63,10 @@ class DashboardController extends Controller
 
     public function financial()
     {
+        if (!auth()->user()->can('dashboards.financial')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $dailyPayments = Payment::whereDate('created_at', Carbon::today())
             ->sum('amount');
 

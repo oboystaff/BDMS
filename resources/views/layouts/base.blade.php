@@ -183,205 +183,194 @@
             <div class="deznav-scroll">
                 <ul class="metismenu" id="menu">
                     {{-- <li class="menu-title">YOUR COMPANY</li> --}}
-                    {{-- @canany(['dashboards.operational']) --}}
-                    <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
-                            <div class="menu-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M9.13478 20.7733V17.7156C9.13478 16.9351 9.77217 16.3023 10.5584 16.3023H13.4326C13.8102 16.3023 14.1723 16.4512 14.4393 16.7163C14.7063 16.9813 14.8563 17.3408 14.8563 17.7156V20.7733C14.8539 21.0978 14.9821 21.4099 15.2124 21.6402C15.4427 21.8705 15.756 22 16.0829 22H18.0438C18.9596 22.0024 19.8388 21.6428 20.4872 21.0008C21.1356 20.3588 21.5 19.487 21.5 18.5778V9.86686C21.5 9.13246 21.1721 8.43584 20.6046 7.96467L13.934 2.67587C12.7737 1.74856 11.1111 1.7785 9.98539 2.74698L3.46701 7.96467C2.87274 8.42195 2.51755 9.12064 2.5 9.86686V18.5689C2.5 20.4639 4.04738 22 5.95617 22H7.87229C8.55123 22 9.103 21.4562 9.10792 20.7822L9.13478 20.7733Z"
-                                        fill="#90959F" />
-                                </svg>
-                            </div>
-                            <span class="nav-text">Dashboard</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('dashboards.operational') --}}
-                            <li><a href="{{ route('dashboard.operational') }}">Operational</a></li>
-                            {{-- @endcan --}}
+                    @canany(['dashboards.operational', 'dashboard.financial'])
+                        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+                                <div class="menu-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9.13478 20.7733V17.7156C9.13478 16.9351 9.77217 16.3023 10.5584 16.3023H13.4326C13.8102 16.3023 14.1723 16.4512 14.4393 16.7163C14.7063 16.9813 14.8563 17.3408 14.8563 17.7156V20.7733C14.8539 21.0978 14.9821 21.4099 15.2124 21.6402C15.4427 21.8705 15.756 22 16.0829 22H18.0438C18.9596 22.0024 19.8388 21.6428 20.4872 21.0008C21.1356 20.3588 21.5 19.487 21.5 18.5778V9.86686C21.5 9.13246 21.1721 8.43584 20.6046 7.96467L13.934 2.67587C12.7737 1.74856 11.1111 1.7785 9.98539 2.74698L3.46701 7.96467C2.87274 8.42195 2.51755 9.12064 2.5 9.86686V18.5689C2.5 20.4639 4.04738 22 5.95617 22H7.87229C8.55123 22 9.103 21.4562 9.10792 20.7822L9.13478 20.7733Z"
+                                            fill="#90959F" />
+                                    </svg>
+                                </div>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('dashboards.operational')
+                                    <li><a href="{{ route('dashboard.operational') }}">Operational</a></li>
+                                @endcan
 
-                            {{-- @can('dashboards.operational') --}}
-                            <li><a href="{{ route('dashboard.financial') }}">Financial</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                                @can('dashboards.financial')
+                                    <li><a href="{{ route('dashboard.financial') }}">Financial</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
-                    {{-- @canany(['companies.view', 'sites.view', 'customers.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-boxes-stacked"></i>
-                            </div>
-                            <span class="nav-text mx-2">Stock</span>
-                        </a>
-                        <ul aria-expanded="false">
+                    @canany(['new_stocks.view', 'inventories.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <span class="nav-text mx-2">Stock</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('new_stocks.view')
+                                    <li><a href="{{ route('new-stocks.index') }}">New Stock</a></li>
+                                @endcan
 
-                            {{-- @can('companies.view')
-                                    <li><a href="{{ route('companies.index') }}">Companies</a></li>
-                                @endcan --}}
+                                @can('inventories.view')
+                                    <li><a href="{{ route('inventories.index') }}">Inventory</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
-                            {{-- @can('sites.view') --}}
-                            <li><a href="{{ route('new-stocks.index') }}">New Stock</a></li>
-                            {{-- @endcan --}}
+                    @canany(['schhols.view', 'bookshops.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-users"> </i>
+                                </div>
+                                <span class="nav-text mx-2">Personnel</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('schools.view')
+                                    <li><a href="{{ route('schools.index') }}">Schools</a></li>
+                                @endcan
 
-                            {{-- @can('customers.view') --}}
-                            <li><a href="{{ route('inventories.index') }}">Inventory</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                                @can('bookshops.view')
+                                    <li><a href="{{ route('bookshops.index') }}">Bookshops</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
-                    {{-- @canany(['drivers.view', 'vehicles.view', 'transporters.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-users"> </i>
-                            </div>
-                            <span class="nav-text mx-2">Personnel</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('drivers.view') --}}
-                            <li><a href="{{ route('schools.index') }}">Schools</a></li>
-                            {{-- @endcan --}}
+                    @canany(['requisitions.view', 'returns.view', 'requests.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-envelope-open-text"></i>
+                                </div>
+                                <span class="nav-text mx-2">Request</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('requisitions.view')
+                                    <li><a href="{{ route('requisitions.index') }}">Book Requisitions</a></li>
+                                @endcan
 
-                            {{-- @can('vehicles.view') --}}
-                            <li><a href="{{ route('bookshops.index') }}">Bookshops</a></li>
-                            {{-- @endcan --}}
+                                @can('returns.view')
+                                    <li><a href="{{ route('book-returns.index') }}">Book Returns</a></li>
+                                @endcan
 
-                            @can('transporters.view')
-                                <li><a href="{{ route('transporters.index') }}">Transporters</a>
-                                </li>
-                            @endcan
-
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
-
-                    {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-envelope-open-text"></i>
-                            </div>
-                            <span class="nav-text mx-2">Request</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('waste-types.view') --}}
-                            <li><a href="{{ route('requisitions.index') }}">Book Requisitions</a></li>
-                            {{-- @endcan --}}
-
-                            {{-- @can('hazard-classes.view') --}}
-                            <li><a href="{{ route('book-returns.index') }}">Book Returns</a></li>
-                            {{-- @endcan --}}
-
-                            {{-- @can('handling-dispositions.view') --}}
-                            <li><a href="{{ route('client-requests.index') }}">Book Requests</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                                @can('requests.view')
+                                    <li><a href="{{ route('client-requests.index') }}">Book Requests</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
 
-                    {{-- @canany(['waste-types.view', 'hazard-classes.view', 'handling-dispositions.view', 'location-types.view', 'schedules.view', 'pickups.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-cart-shopping"></i>
-                            </div>
-                            <span class="nav-text mx-2">Sales & Billing</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('waste-types.view') --}}
-                            <li><a href="{{ route('sales.index') }}">Sales</a></li>
-                            {{-- @endcan --}}
+                    @canany(['sales.view', 'invoices.view', 'payments.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-cart-shopping"></i>
+                                </div>
+                                <span class="nav-text mx-2">Sales & Billing</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('sales.view')
+                                    <li><a href="{{ route('sales.index') }}">Sales</a></li>
+                                @endcan
 
-                            {{-- @can('hazard-classes.view') --}}
-                            <li><a href="{{ route('invoices.index') }}">Invoices</a></li>
-                            {{-- @endcan --}}
+                                @can('invoices.view')
+                                    <li><a href="{{ route('invoices.index') }}">Invoices</a></li>
+                                @endcan
 
-                            {{-- @can('handling-dispositions.view') --}}
-                            <li><a href="{{ route('payments.index') }}">Payments</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                                @can('payments.view')
+                                    <li><a href="{{ route('payments.index') }}">Payments</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
 
-                    {{-- @canany(['reports.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-file-invoice"></i>
-                            </div>
-                            <span class="nav-text mx-2">Reports</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('reports.view') --}}
-                            <li><a href="{{ route('school-reports.index') }}">School Report</a></li>
-                            <li><a href="{{ route('bookshop-reports.index') }}">Bookshop Report</a></li>
-                            <li><a href="{{ route('book-reports.index') }}">Book Report</a></li>
-                            <li><a href="{{ route('requisition-reports.index') }}">Book Requisition Report</a></li>
-                            <li><a href="{{ route('return-reports.index') }}">Book Return Report</a></li>
-                            <li><a href="{{ route('inventory-reports.index') }}">Inventory Report</a></li>
-                            <li><a href="{{ route('sales-reports.index') }}">Sales Report</a></li>
-                            <li><a href="{{ route('invoice-reports.index') }}">Invoice Report</a></li>
-                            <li><a href="{{ route('payment-reports.index') }}">Payment Report</a></li>
-                            <li><a href="{{ route('request-reports.index') }}">Request Report</a></li>
-                            <li><a href="{{ route('receivable-reports.index') }}">Receivable Report</a></li>
-                            {{-- @endcan --}}
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                    @canany(['reports.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-file-invoice"></i>
+                                </div>
+                                <span class="nav-text mx-2">Reports</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('reports.view')
+                                    <li><a href="{{ route('school-reports.index') }}">School Report</a></li>
+                                    <li><a href="{{ route('bookshop-reports.index') }}">Bookshop Report</a></li>
+                                    <li><a href="{{ route('book-reports.index') }}">Book Report</a></li>
+                                    <li><a href="{{ route('requisition-reports.index') }}">Book Requisition Report</a></li>
+                                    <li><a href="{{ route('return-reports.index') }}">Book Return Report</a></li>
+                                    <li><a href="{{ route('inventory-reports.index') }}">Inventory Report</a></li>
+                                    <li><a href="{{ route('sales-reports.index') }}">Sales Report</a></li>
+                                    <li><a href="{{ route('invoice-reports.index') }}">Invoice Report</a></li>
+                                    <li><a href="{{ route('payment-reports.index') }}">Payment Report</a></li>
+                                    <li><a href="{{ route('request-reports.index') }}">Request Report</a></li>
+                                    <li><a href="{{ route('receivable-reports.index') }}">Receivable Report</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
-                    {{-- @canany(['users.view', 'roles.view', 'permissions.view']) --}}
-                    <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
-                            <div class="menu-icon">
-                                <i class="fs-20 fa-solid fa-gears"></i>
-                            </div>
-                            <span class="nav-text mx-2">Settings</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('users.index') }}"> Users</a></li>
-                            {{-- @endcan --}}
+                    @canany(['users.view', 'roles.view', 'permissions.view'])
+                        <li><a href="javascript:void(0);" class="has-arrow " aria-expanded="false">
+                                <div class="menu-icon">
+                                    <i class="fs-20 fa-solid fa-gears"></i>
+                                </div>
+                                <span class="nav-text mx-2">Settings</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                @can('users.view')
+                                    <li><a href="{{ route('users.index') }}"> Users</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('zonal-sales-officers.index') }}"> Zonal Sales Officers</a></li>
-                            {{-- @endcan --}}
+                                @can('zonal_sales_officers.view')
+                                    <li><a href="{{ route('zonal-sales-officers.index') }}"> Zonal Sales Officers</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('zones.index') }}"> Zones</a></li>
-                            {{-- @endcan --}}
+                                @can('zones.view')
+                                    <li><a href="{{ route('zones.index') }}"> Zones</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('territories.index') }}"> Territories</a></li>
-                            {{-- @endcan --}}
+                                @can('territories.view')
+                                    <li><a href="{{ route('territories.index') }}"> Territories</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('subjects.index') }}"> Subjects</a></li>
-                            {{-- @endcan --}}
+                                @can('subjects.view')
+                                    <li><a href="{{ route('subjects.index') }}"> Subjects</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('levels.index') }}"> Levels</a></li>
-                            {{-- @endcan --}}
+                                @can('levels.view')
+                                    <li><a href="{{ route('levels.index') }}"> Levels</a></li>
+                                @endcan
 
-                            {{-- @can('users.view') --}}
-                            <li><a href="{{ route('books.index') }}"> Books</a></li>
-                            {{-- @endcan --}}
+                                @can('books.view')
+                                    <li><a href="{{ route('books.index') }}"> Books</a></li>
+                                @endcan
 
-                            @can('roles.view')
-                                <li><a href="{{ route('roles.index') }}"> Roles</a></li>
-                            @endcan
+                                @can('roles.view')
+                                    <li><a href="{{ route('roles.index') }}"> Roles</a></li>
+                                @endcan
 
-                            @can('permissions.view')
-                                <li><a href="{{ route('permissions.index') }}"> Permissions</a></li>
-                            @endcan
-                        </ul>
-                    </li>
-                    {{-- @endcanany --}}
+                                @can('permissions.view')
+                                    <li><a href="{{ route('permissions.index') }}"> Permissions</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
                 </ul>
             </div>
         </div>
 
         <!--**********************************
-                            Content body start
-                        ***********************************-->
+                                                        Content body start
+                                                    ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
 
@@ -390,13 +379,13 @@
             </div>
         </div>
         <!--**********************************
-                            Content body end
-                        ***********************************-->
+                                                        Content body end
+                                                    ***********************************-->
 
 
         <!--**********************************
-                            Footer start
-                        ***********************************-->
+                                                        Footer start
+                                                    ***********************************-->
         <div class="footer">
             <div class="copyright">
                 <p>Copyright © Developed by <a href="#" target="_blank">Cyber Solutions Limited</a>
@@ -405,26 +394,26 @@
             </div>
         </div>
         <!--**********************************
-                            Footer end
-                        ***********************************-->
+                                                        Footer end
+                                                    ***********************************-->
 
         <!--**********************************
-                           Support ticket button start
-                        ***********************************-->
+                                                       Support ticket button start
+                                                    ***********************************-->
 
         <!--**********************************
-                           Support ticket button end
-                        ***********************************-->
+                                                       Support ticket button end
+                                                    ***********************************-->
 
 
     </div>
     <!--**********************************
-                        Main wrapper end
-                    ***********************************-->
+                                                    Main wrapper end
+                                                ***********************************-->
 
     <!--**********************************
-                        Scripts
-                    ***********************************-->
+                                                    Scripts
+                                                ***********************************-->
     <!-- Required vendors -->
     <script src="{{ asset('assets/vendor/global/global.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>

@@ -16,9 +16,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        // if (!auth()->user()->can('users.view')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!auth()->user()->can('users.view')) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $users = User::orderBy('created_at', 'DESC')->get();
 
@@ -27,13 +27,14 @@ class UserController extends Controller
 
     public function create()
     {
-        // if (!auth()->user()->can('users.create')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!auth()->user()->can('users.create')) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $regions = Region::orderBy('name', 'ASC')->get();
+        $roles = Role::orderBy('name', 'ASC')->get();
 
-        return view('users.create', compact('regions'));
+        return view('users.create', compact('regions', 'roles'));
     }
 
     public function store(CreateUserRequest $request)
@@ -43,8 +44,7 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
 
             $user = User::create($data);
-
-            //$user->roles()->sync($request->validated('role'));
+            $user->roles()->sync($request->validated('role'));
 
             return redirect()->route('users.index')->with('status', 'User account created successfully.');
         } catch (\Exception $ex) {
@@ -59,14 +59,15 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // if (!auth()->user()->can('users.update')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (!auth()->user()->can('users.update')) {
+            abort(403, 'Unauthorized action.');
+        }
 
-        //$roles = Role::orderBy('name', 'ASC')->get();
         $regions = Region::orderBy('name', 'ASC')->get();
+        $roles = Role::orderBy('name', 'ASC')->get();
+        $userRole = $user->roles()->pluck('id')->toArray();
 
-        return view('users.edit', compact('user', 'regions'));
+        return view('users.edit', compact('user', 'regions', 'roles', 'userRole'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -81,8 +82,7 @@ class UserController extends Controller
             }
 
             $user->update($data);
-
-            //$user->roles()->sync($request->validated('role'));
+            $user->roles()->sync($request->validated('role'));
 
             return redirect()->route('users.index')->with('status', 'User account updated successfully.');
         } catch (\Exception $ex) {

@@ -27,7 +27,8 @@ class UpdateUserRequest extends FormRequest
             'phone' => ['required', 'string'],
             'region_id' => ['nullable', 'string', 'exists:regions,id'],
             'password' => ['nullable', 'confirmed'],
-            'status' => ['nullable', 'string', 'in:Active,InActive']
+            'status' => ['nullable', 'string', 'in:Active,InActive'],
+            'role' => ['required', 'string']
         ];
     }
 }

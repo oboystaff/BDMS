@@ -12,6 +12,10 @@ class SubjectController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('subjects.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $subjects = Subject::orderBy('created_at', 'DESC')->get();
 
         return view('subjects.index', compact('subjects'));
@@ -19,6 +23,10 @@ class SubjectController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('subjects.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('subjects.create');
     }
 
@@ -39,6 +47,10 @@ class SubjectController extends Controller
 
     public function edit(Subject $subject)
     {
+        if (!auth()->user()->can('subjects.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('subjects.edit', compact('subject'));
     }
 

@@ -5,6 +5,20 @@
 
 @section('page-content')
     <div class="row">
+        @if (session()->has('status'))
+            <div class="alert alert-success alert-dismissible fade show">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                <strong>{{ session('status') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
+                            class="fa-solid fa-xmark"></i></span>
+                </button>
+            </div>
+        @endif
+
         <div class="col-lg-12">
             <div class="card dz-card" id="accordion-four">
                 <div class="card-header flex-wrap d-flex justify-content-between">
@@ -16,20 +30,6 @@
                         <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm ms-2">+ Add User</a>
                     </div>
                 </div>
-
-                @if (session()->has('status'))
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
-                            fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                            <polyline points="9 11 12 14 22 4"></polyline>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                        </svg>
-                        <strong>{{ session('status') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"><span><i
-                                    class="fa-solid fa-xmark"></i></span>
-                        </button>
-                    </div>
-                @endif
 
                 <div class="tab-content" id="myTabContent-3">
                     <div class="tab-pane fade show active" id="withoutBorder" role="tabpanel" aria-labelledby="home-tab-3">

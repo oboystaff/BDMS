@@ -21,6 +21,8 @@ use App\Http\Controllers\Sales;
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Payment;
 use App\Http\Controllers\Report;
+use App\Http\Controllers\Role;
+use App\Http\Controllers\Permission;
 
 
 
@@ -227,4 +229,22 @@ Route::group(['prefix' => 'report', 'middleware' => 'auth:sanctum'], function ()
     Route::get('/payment-report', [Report\PaymentReportController::class, 'index'])->name('payment-reports.index');
     Route::get('/request-report', [Report\RequestReportController::class, 'index'])->name('request-reports.index');
     Route::get('/receivable-report', [Report\ReceivableReportController::class, 'index'])->name('receivable-reports.index');
+});
+
+Route::group(['prefix' => 'role', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Role\RoleController::class, 'index'])->name('roles.index');
+    Route::get('/create', [Role\RoleController::class, 'create'])->name('roles.create');
+    Route::get('/show/{role}', [Role\RoleController::class, 'show'])->name('roles.show');
+    Route::get('/edit/{role}', [Role\RoleController::class, 'edit'])->name('roles.edit');
+    Route::post('/create', [Role\RoleController::class, 'store'])->name('roles.store');
+    Route::post('/update/{role}', [Role\RoleController::class, 'update'])->name('roles.update');
+});
+
+Route::group(['prefix' => 'permission', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [Permission\PermissionController::class, 'index'])->name('permissions.index');
+    Route::get('/create', [Permission\PermissionController::class, 'create'])->name('permissions.create');
+    Route::get('/show/{permission}', [Permission\PermissionController::class, 'show'])->name('permissions.show');
+    Route::get('/edit/{permission}', [Permission\PermissionController::class, 'edit'])->name('permissions.edit');
+    Route::post('/create', [Permission\PermissionController::class, 'store'])->name('permissions.store');
+    Route::post('/update/{permission}', [Permission\PermissionController::class, 'update'])->name('permissions.update');
 });

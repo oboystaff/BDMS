@@ -14,6 +14,10 @@ class BookReturnController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('returns.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $bookReturns = BookReturn::orderBy('created_at', 'DESC')->get();
 
         return view('returns.index', compact('bookReturns'));
@@ -21,6 +25,10 @@ class BookReturnController extends Controller
 
     public function create(BookRequisition $requisition)
     {
+        if (!auth()->user()->can('returns.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $book = Book::where('subject_id', $requisition->subject_id)
             ->where('level_id', $requisition->level_id)
             ->first();

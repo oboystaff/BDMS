@@ -102,6 +102,25 @@
                                         </span>
                                     @enderror
                                 </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Role</label>
+                                    <select class="form-control default-select @error('role') is-invalid @enderror"
+                                        name="role">
+                                        <option disabled selected>Select User Role</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('role')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Submit</button>

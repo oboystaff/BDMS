@@ -17,6 +17,10 @@ class BookshopController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('bookshops.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $bookshops = Registration::orderBy('created_at', 'DESC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('region_id', $request->user()->region_id);
@@ -35,6 +39,10 @@ class BookshopController extends Controller
 
     public function create(Request $request)
     {
+        if (!auth()->user()->can('bookshops.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $regions = Region::orderBy('name', 'ASC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('id', $request->user()->region_id);
@@ -71,6 +79,10 @@ class BookshopController extends Controller
 
     public function edit(Request $request, Registration $bookshop)
     {
+        if (!auth()->user()->can('bookshops.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $regions = Region::orderBy('name', 'ASC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('id', $request->user()->region_id);

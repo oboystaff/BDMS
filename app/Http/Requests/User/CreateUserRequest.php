@@ -26,7 +26,8 @@ class CreateUserRequest extends FormRequest
             'email' => ['required', 'string', 'unique:users,email'],
             'phone' => ['required', 'string', 'unique:users,phone'],
             'region_id' => ['nullable', 'string', 'exists:regions,id'],
-            'password' => ['required', 'confirmed']
+            'password' => ['required', 'confirmed'],
+            'role' => ['required', 'string']
         ];
     }
 }

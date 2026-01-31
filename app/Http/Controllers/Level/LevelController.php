@@ -12,6 +12,10 @@ class LevelController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('levels.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $levels = Level::orderBy('created_at', 'DESC')->get();
 
         return view('levels.index', compact('levels'));
@@ -19,6 +23,10 @@ class LevelController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('levels.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('levels.create');
     }
 
@@ -39,6 +47,10 @@ class LevelController extends Controller
 
     public function edit(Level $level)
     {
+        if (!auth()->user()->can('levels.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('levels.edit', compact('level'));
     }
 

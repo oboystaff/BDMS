@@ -16,6 +16,10 @@ class RequisitionController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('requisitions.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $requisitions = BookRequisition::orderBy('created_at', 'DESC')
             ->when(!empty($request->user()->zso_id), function ($query) use ($request) {
                 $query->where('created_by', $request->user()->id);
@@ -27,6 +31,10 @@ class RequisitionController extends Controller
 
     public function create(Request $request, Book $book)
     {
+        if (!auth()->user()->can('requisitions.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $subjects = Subject::orderBy('name', 'ASC')->get();
         $levels = Level::orderBy('name', 'ASC')->get();
         $user = $request->user();

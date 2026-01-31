@@ -13,9 +13,9 @@ class ReceivableReportController extends Controller
     public function index(Request $request)
     {
         try {
-            // if (!auth()->user()->can('reports.view')) {
-            //     abort(403, 'Unauthorized action.');
-            // }
+            if (!auth()->user()->can('reports.view')) {
+                abort(403, 'Unauthorized action.');
+            }
 
             if (request()->ajax()) {
 

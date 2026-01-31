@@ -16,6 +16,10 @@ class SchoolController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('schools.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $schools = Registration::orderBy('created_at', 'DESC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('region_id', $request->user()->region_id);
@@ -34,6 +38,10 @@ class SchoolController extends Controller
 
     public function create(Request $request)
     {
+        if (!auth()->user()->can('schools.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $regions = Region::orderBy('name', 'ASC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('id', $request->user()->region_id);
@@ -70,6 +78,10 @@ class SchoolController extends Controller
 
     public function edit(Request $request, Registration $school)
     {
+        if (!auth()->user()->can('schools.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $regions = Region::orderBy('name', 'ASC')
             ->when(!empty($request->user()->region_id), function ($query) use ($request) {
                 $query->where('id', $request->user()->region_id);

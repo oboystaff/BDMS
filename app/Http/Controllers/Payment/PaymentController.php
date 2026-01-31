@@ -14,6 +14,10 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('payments.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $payments = Payment::orderBy('created_at', 'DESC')
             ->when($request->display == "daily", function ($query) {
                 $query->whereDate('created_at', Carbon::today());
@@ -44,6 +48,10 @@ class PaymentController extends Controller
 
     public function create(Invoice $invoice)
     {
+        if (!auth()->user()->can('payments.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $clientRequest = ClientRequest::where('request_id', $invoice->sale->request_id)->first();
 
         return view('payments.create', compact('invoice', 'clientRequest'));

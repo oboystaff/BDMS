@@ -15,9 +15,9 @@ class BookshopReportController extends Controller
     public function index(Request $request)
     {
         try {
-            // if (!auth()->user()->can('reports.view')) {
-            //     abort(403, 'Unauthorized action.');
-            // }
+            if (!auth()->user()->can('reports.view')) {
+                abort(403, 'Unauthorized action.');
+            }
 
             $regions = Region::orderBy('name', 'ASC')->get();
             $zones = Zone::orderBy('name', 'ASC')->get();

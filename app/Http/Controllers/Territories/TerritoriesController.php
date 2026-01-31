@@ -13,6 +13,10 @@ class TerritoriesController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('territories.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $territories = Territory::orderBy('created_at', 'DESC')
             ->where('status', 'Active')
             ->get();
@@ -22,6 +26,10 @@ class TerritoriesController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('territories.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zones = Zone::orderBy('name', 'ASC')
             ->where('status', 'Active')
             ->get();
@@ -46,6 +54,10 @@ class TerritoriesController extends Controller
 
     public function edit(Territory $territory)
     {
+        if (!auth()->user()->can('territories.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $zones = Zone::orderBy('name', 'ASC')
             ->where('status', 'Active')
             ->get();
