@@ -115,6 +115,10 @@
                                                                     href="{{ route('bookshops.make_request', $bookshop) }}">Make
                                                                     Request
                                                                 </a>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('bookshops.statement', $bookshop) }}">View
+                                                                    Statement
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>

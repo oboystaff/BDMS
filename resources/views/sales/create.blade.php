@@ -43,8 +43,8 @@
                                     <label class="form-label">Subject</label>
                                     <input type="text" name="subject"
                                         class="form-control @error('subject') is-invalid @enderror"
-                                        placeholder="Subject Name"
-                                        value="{{ $clientRequest->book->subject->name ?? 'N/A' }}" readonly>
+                                        placeholder="Subject Name" value="{{ $sale->book->subject->name ?? 'N/A' }}"
+                                        readonly>
 
                                     @error('subject')
                                         <span class="invalid-feedback" role="alert">
@@ -57,7 +57,7 @@
                                     <label class="form-label">Level</label>
                                     <input type="text" name="level"
                                         class="form-control @error('level') is-invalid @enderror" placeholder="Level Name"
-                                        value="{{ $clientRequest->book->level->name ?? 'N/A' }}" readonly>
+                                        value="{{ $sale->book->level->name ?? 'N/A' }}" readonly>
 
                                     @error('level')
                                         <span class="invalid-feedback" role="alert">
@@ -70,8 +70,7 @@
                                     <label class="form-label">Unit Price</label>
                                     <input type="text" name="unit_price" id="unit_price"
                                         class="form-control @error('unit_price') is-invalid @enderror"
-                                        placeholder="Unit Price" value="{{ $clientRequest->book->unit_price ?? 0 }}"
-                                        readonly>
+                                        placeholder="Unit Price" value="{{ $sale->unit_price ?? 0 }}" readonly>
 
                                     @error('unit_price')
                                         <span class="invalid-feedback" role="alert">
@@ -84,8 +83,7 @@
                                     <label class="form-label">Available Stock</label>
                                     <input type="text" name="available_stock"
                                         class="form-control @error('available_stock') is-invalid @enderror"
-                                        placeholder="Available Stock" value="{{ $clientRequest->book->quantity ?? 0 }}"
-                                        readonly>
+                                        placeholder="Available Stock" value="{{ $sale->quantity ?? 0 }}" readonly>
 
                                     @error('available_stock')
                                         <span class="invalid-feedback" role="alert">
@@ -140,7 +138,7 @@
                                     <label class="form-label">Quantity</label>
                                     <input type="text" name="quantity" id="quantity"
                                         class="form-control @error('quantity') is-invalid @enderror"
-                                        placeholder="Book Quantity" value="{{ $clientRequest->quantity }}" readonly>
+                                        placeholder="Book Quantity" value="{{ $sale->quantity }}" readonly>
 
                                     @error('quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -153,7 +151,7 @@
                                     <label class="form-label">Amount</label>
                                     <input type="text" name="amount" id="amount"
                                         class="form-control @error('amount') is-invalid @enderror"
-                                        placeholder="Book Amount" value="{{ $clientRequest->amount }}" readonly>
+                                        placeholder="Book Amount" value="{{ $sale->amount }}" readonly>
 
                                     @error('amount')
                                         <span class="invalid-feedback" role="alert">
@@ -173,6 +171,46 @@
                                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <input class="form-check-input" type="checkbox" name="apply_discount"
+                                            value="1" id="applyDiscountYes">
+                                        <label class="form-check-label" for="applyDiscountYes">Apply Discount</label>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <input class="form-check-input" type="checkbox" name="apply_tax" value="1"
+                                            id="applyTaxYes">
+                                        <label class="form-check-label" for="applyTaxYes">Apply Tax</label>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4 discount" style="display: none" id="discountInput">
+                                        <label class="form-label">Discount (%)</label>
+                                        <input type="text" name="discount" id="discount"
+                                            class="form-control @error('discount') is-invalid @enderror"
+                                            placeholder="Discount value">
+
+                                        @error('discount')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-4 discount" style="display: none" id="discountAmountInput">
+                                        <label class="form-label">Discount Amount</label>
+                                        <input type="text" name="discount_amount" id="discount_amount"
+                                            class="form-control @error('discount_amount') is-invalid @enderror"
+                                            placeholder="Discount Amount" readonly>
+
+                                        @error('discount_amount')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Confirm</button>
@@ -185,4 +223,35 @@
 @endsection
 
 @section('page-scripts')
+    <script>
+        document.getElementById('applyDiscountYes').addEventListener('change', function() {
+            const discountInput = document.getElementById('discountInput');
+            const discountAmountInput = document.getElementById('discountAmountInput');
+
+            if (this.checked) {
+                discountInput.style.display = 'block';
+                discountAmountInput.style.display = 'block';
+            } else {
+                discountInput.style.display = 'none';
+                discountAmountInput.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const discountInput = document.getElementById('discount');
+            const discountAmountInput = document.getElementById('discount_amount');
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            discountInput.addEventListener('input', function() {
+
+                let discount = parseFloat(this.value) || 0;
+
+                if (discount < 0) discount = 0;
+                if (discount > 100) discount = 100;
+
+                let discountAmount = (amount * discount) / 100;
+                discountAmountInput.value = discountAmount.toFixed(2);
+            });
+        });
+    </script>
 @endsection

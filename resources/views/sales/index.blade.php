@@ -78,10 +78,10 @@
                                                 <td>{{ $sale->client_id }}</td>
                                                 <td>{{ $sale->client->name ?? 'N/A' }}</td>
                                                 <td>{{ $sale->book_id }}</td>
-                                                <td>{{ $sale->clientRequest->subject->name ?? 'N/A' }}</td>
-                                                <td>{{ $sale->clientRequest->level->name ?? 'N/A' }}</td>
-                                                <td>{{ $sale->clientRequest->unit_price ?? 0 }}</td>
-                                                <td>{{ $sale->clientRequest->quantity ?? 0 }}</td>
+                                                <td>{{ $sale->book->subject->name ?? 'N/A' }}</td>
+                                                <td>{{ $sale->book->level->name ?? 'N/A' }}</td>
+                                                <td>{{ $sale->unit_price ?? 0 }}</td>
+                                                <td>{{ $sale->quantity ?? 0 }}</td>
                                                 <td>{{ number_format($sale->amount, 2) }}</td>
                                                 <td>{{ $sale->zso->name ?? 'N/A' }}</td>
                                                 <td>{{ $sale->status }}</td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Invoice\CreateInvoiceRequest;
 use App\Http\Requests\Sales\CreateSalesRequest;
 use App\Models\Book;
 use App\Models\ClientRequest;
@@ -10,6 +11,7 @@ use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\ZonalSalesOfficer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class SalesController extends Controller
@@ -27,49 +29,65 @@ class SalesController extends Controller
 
     public function create() {}
 
+
     public function store(CreateSalesRequest $request)
     {
         $data = $request->validated();
-        $data['created_by'] = $request->user()->id;
+        $userId = $request->user()->id;
 
-        $salesData = [
-            'request_id' => $data['request_id'],
-            'client_id' => $data['client_id'],
-            'book_id' => $data['book_id'],
-            'amount' => $data['amount'],
-            'zonal_sales_officer_id' => $data['zonal_sales_officer_id'],
-            'created_by' => $data['created_by']
-        ];
+        $salesCount = 0;
 
-        if ((float) $request->input('quantity') > (float) $request->input('available_stock')) {
-            return redirect()->route('sales.client_request')->with('error', 'Book request cannot be greater than the available stock, check and try again');
+        try {
+            DB::transaction(function () use ($data, $userId, &$salesCount) {
+
+                $clientRequests = ClientRequest::where('request_id', $data['request_id'])->get();
+
+                if ($clientRequests->isEmpty()) {
+                    return redirect()->route('sales.client_request')->with('error', 'No client requests found for this request.');
+                }
+
+                foreach ($clientRequests as $clientRequest) {
+
+                    $book = Book::where('book_id', $clientRequest->book_id)->firstOrFail();
+
+                    if ($clientRequest->quantity > $book->quantity) {
+                        return redirect()->route('sales.client_request')->with('error', 'Requested quantity for {$book->title} exceeds available stock.');
+                    }
+
+                    Sale::create([
+                        'request_id'             => $clientRequest->request_id,
+                        'client_id'              => $clientRequest->client_id,
+                        'book_id'                => $clientRequest->book_id,
+                        'unit_price'             => $clientRequest->unit_price,
+                        'quantity'               => $clientRequest->quantity,
+                        'amount'                 => $clientRequest->amount,
+                        'zonal_sales_officer_id' => $data['zonal_sales_officer_id'],
+                        'created_by'             => $userId,
+                    ]);
+
+                    $salesCount++;
+
+                    $book->update([
+                        'quantity' => $book->quantity - $clientRequest->quantity
+                    ]);
+
+                    $clientRequest->update([
+                        'status' => 'Completed'
+                    ]);
+                }
+            });
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('sales.client_request')
+                ->with('error', $e->getMessage());
         }
 
-        $sales = Sale::create($salesData);
-
-        if (!empty($sales)) {
-            $clientRequest = ClientRequest::where('request_id', $data['request_id'])->first();
-            $book = Book::where('book_id', $data['book_id'])->first();
-
-            $clientRequestData = [
-                'status' => 'Completed'
-            ];
-
-            $clientRequest->update($clientRequestData);
-
-            $currentQuantity = (float) $book->quantity;
-            $requestQuantity = (float) $clientRequest->quantity;
-            $newQuantity = $currentQuantity - $requestQuantity;
-
-            $bookData = [
-                'quantity' => $newQuantity
-            ];
-
-            $book->update($bookData);
-        }
-
-        return redirect()->route('sales.index')->with('status', 'Book sale created successfully.');
+        return redirect()
+            ->route('sales.index')
+            ->with('status', "Sales created successfully. Total items sold: {$salesCount}");
     }
+
+
 
     public function show(Sale $sale)
     {
@@ -112,8 +130,9 @@ class SalesController extends Controller
         return view('sales.create', compact('sale', 'clientRequest'));
     }
 
-    public function confirm_data(Request $request, Sale $sale)
+    public function confirm_data(CreateInvoiceRequest $request, Sale $sale)
     {
+
         $saleData = [
             'status' => 'Completed'
         ];
@@ -129,6 +148,12 @@ class SalesController extends Controller
             'amount' => $request->input('amount'),
             'created_by' => $request->user()->id
         ];
+
+        if ($request->apply_discount == 1) {
+            $invoiceData['discount'] = $request->input('discount');
+            $invoiceData['discount_amount'] = $request->input('discount_amount');
+            $invoiceData['amount'] = (float)$invoiceData['amount'] - (float) $invoiceData['discount_amount'];
+        }
 
         $invoice = Invoice::create($invoiceData);
 

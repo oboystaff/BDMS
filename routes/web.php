@@ -165,6 +165,7 @@ Route::group(['prefix' => 'school', 'middleware' => 'auth:sanctum'], function ()
     Route::get('/edit/{school}', [School\SchoolController::class, 'edit'])->name('schools.edit');
     Route::post('/update/{school}', [School\SchoolController::class, 'update'])->name('schools.update');
     Route::get('/make/request/{school}', [School\SchoolController::class, 'make_request'])->name('schools.make_request');
+    Route::get('/statement/{school}', [School\SchoolController::class, 'statement'])->name('schools.statement');
 });
 
 Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function () {
@@ -175,6 +176,7 @@ Route::group(['prefix' => 'bookshop', 'middleware' => 'auth:sanctum'], function 
     Route::get('/edit/{bookshop}', [Bookshop\BookshopController::class, 'edit'])->name('bookshops.edit');
     Route::post('/update/{bookshop}', [Bookshop\BookshopController::class, 'update'])->name('bookshops.update');
     Route::get('/make/request/{bookshop}', [Bookshop\BookshopController::class, 'make_request'])->name('bookshops.make_request');
+    Route::get('/statement/{bookshop}', [Bookshop\BookshopController::class, 'statement'])->name('bookshops.statement');
 });
 
 Route::group(['prefix' => 'client-request', 'middleware' => 'auth:sanctum'], function () {

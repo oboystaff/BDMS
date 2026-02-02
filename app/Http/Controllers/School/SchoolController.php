@@ -13,7 +13,10 @@ use App\Models\Subject;
 use App\Models\Territory;
 use App\Models\ZonalSalesOfficer;
 use App\Models\Zone;
+use App\Models\Invoice;
+use App\Models\Payment;
 use Illuminate\Http\Request;
+
 
 class SchoolController extends Controller
 {
@@ -115,5 +118,60 @@ class SchoolController extends Controller
         $books = Book::orderBy('created_at', 'DESC')->get();
 
         return view('schools.make_request', compact('school', 'books'));
+    }
+
+    public function statement(Registration $school)
+    {
+        $invoices = Invoice::where('client_id', $school->reg_id)->get();
+        $payments = Payment::where('client_id', $school->reg_id)->get();
+
+        $statement = collect();
+
+        foreach ($invoices as $invoice) {
+            $statement->push([
+                'type'        => 'Invoice',
+                'date'        => $invoice->created_at,
+                'amount'      => $invoice->amount,
+                'description' => 'Invoice No: ' . $invoice->invoice_id,
+                'source'      => '-----',
+            ]);
+        }
+
+        foreach ($payments as $payment) {
+            $statement->push([
+                'type'        => 'Payment',
+                'date'        => $payment->created_at,
+                'amount'      => $payment->amount,
+                'description' => 'Payment No: ' . $payment->payment_id,
+                'source'      => $payment->payment_mode,
+            ]);
+
+            if (
+                !empty($payment->withholding_tax_amount) &&
+                $payment->withholding_tax_amount > 0
+            ) {
+                $statement->push([
+                    'type'        => 'Withholding Tax',
+                    'date'        => $payment->created_at,
+                    'amount'      => $payment->withholding_tax_amount,
+                    'description' => 'Withholding Tax (' . $payment->withholding_tax . '%) - Payment No: ' . $payment->payment_id,
+                    'source'      => 'WHT',
+                ]);
+            }
+        }
+
+        $statement = $statement->sortBy('date')->values();
+
+        $total_invoiced = $invoices->sum('amount');
+        $total_paid = $payments->sum('amount') + $payments->sum('withholding_tax_amount');
+        $balance = $total_invoiced - $total_paid;
+
+        return view('schools.statement', compact(
+            'school',
+            'statement',
+            'total_invoiced',
+            'total_paid',
+            'balance'
+        ));
     }
 }

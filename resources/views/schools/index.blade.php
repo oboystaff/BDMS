@@ -118,6 +118,10 @@
                                                                     href="{{ route('schools.make_request', $school) }}">Make
                                                                     Request
                                                                 </a>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('schools.statement', $school) }}">View
+                                                                    Statement
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>

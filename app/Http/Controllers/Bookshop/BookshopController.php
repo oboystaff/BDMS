@@ -10,6 +10,8 @@ use App\Models\Book;
 use App\Models\Region;
 use App\Models\Zone;
 use App\Models\Territory;
+use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\ZonalSalesOfficer;
 use Illuminate\Http\Request;
 
@@ -114,5 +116,60 @@ class BookshopController extends Controller
         $books = Book::orderBy('created_at', 'DESC')->get();
 
         return view('bookshops.make_request', compact('bookshop', 'books'));
+    }
+
+    public function statement(Registration $bookshop)
+    {
+        $invoices = Invoice::where('client_id', $bookshop->reg_id)->get();
+        $payments = Payment::where('client_id', $bookshop->reg_id)->get();
+
+        $statement = collect();
+
+        foreach ($invoices as $invoice) {
+            $statement->push([
+                'type'        => 'Invoice',
+                'date'        => $invoice->created_at,
+                'amount'      => $invoice->amount,
+                'description' => 'Invoice No: ' . $invoice->invoice_no,
+                'source'      => '-----',
+            ]);
+        }
+
+        foreach ($payments as $payment) {
+            $statement->push([
+                'type'        => 'Payment',
+                'date'        => $payment->created_at,
+                'amount'      => $payment->amount,
+                'description' => 'Payment No: ' . $payment->payment_id,
+                'source'      => $payment->payment_mode,
+            ]);
+
+            if (
+                !empty($payment->withholding_tax_amount) &&
+                $payment->withholding_tax_amount > 0
+            ) {
+                $statement->push([
+                    'type'        => 'Withholding Tax',
+                    'date'        => $payment->created_at,
+                    'amount'      => $payment->withholding_tax_amount,
+                    'description' => 'Withholding Tax (' . $payment->withholding_tax . '%) - Payment No: ' . $payment->payment_id,
+                    'source'      => 'WHT',
+                ]);
+            }
+        }
+
+        $statement = $statement->sortBy('date')->values();
+
+        $total_invoiced = $invoices->sum('amount');
+        $total_paid = $payments->sum('amount') + $payments->sum('withholding_tax_amount');
+        $balance = $total_invoiced - $total_paid;
+
+        return view('bookshops.statement', compact(
+            'bookshop',
+            'statement',
+            'total_invoiced',
+            'total_paid',
+            'balance'
+        ));
     }
 }

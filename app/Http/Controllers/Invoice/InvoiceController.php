@@ -36,9 +36,11 @@ class InvoiceController extends Controller
             ->get();
 
         $amount = $invoices->sum('amount');
+        $discount_amount = $invoices->sum('discount_amount');
 
         $total = [
-            'amount' => isset($amount) ? number_format($amount, 2) : 0
+            'amount' => isset($amount) ? number_format($amount, 2) : 0,
+            'discount_amount' => isset($discount_amount) ? number_format($discount_amount, 2) : 0
         ];
 
         return view('invoices.index', compact('invoices', 'total'));

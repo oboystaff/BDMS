@@ -62,6 +62,7 @@
                                             <th>Unit Price</th>
                                             <th>Quantity</th>
                                             <th>Amount</th>
+                                            <th>Discount Amount</th>
                                             <th>ZSO</th>
                                             <th>Created By</th>
                                             <th>Created Date</th>
@@ -76,11 +77,12 @@
                                                 <td>{{ $invoice->client_id }}</td>
                                                 <td>{{ $invoice->client->name ?? 'N/A' }}</td>
                                                 <td>{{ $invoice->book_id }}</td>
-                                                <td>{{ $invoice->sale->clientRequest->subject->name ?? 'N/A' }}</td>
-                                                <td>{{ $invoice->sale->clientRequest->level->name ?? 'N/A' }}</td>
-                                                <td>{{ $invoice->sale->clientRequest->unit_price ?? 0 }}</td>
-                                                <td>{{ $invoice->sale->clientRequest->quantity ?? 0 }}</td>
+                                                <td>{{ $invoice->sale->book->subject->name ?? 'N/A' }}</td>
+                                                <td>{{ $invoice->sale->book->level->name ?? 'N/A' }}</td>
+                                                <td>{{ $invoice->sale->unit_price ?? 0 }}</td>
+                                                <td>{{ $invoice->sale->quantity ?? 0 }}</td>
                                                 <td>{{ number_format($invoice->amount, 2) }}</td>
+                                                <td>{{ number_format($invoice->discount_amount, 2) ?? '0.00' }}</td>
                                                 <td>{{ $invoice->sale->zso->name ?? 'N/A' }}</td>
                                                 <td>{{ $invoice->createdBy->name ?? 'N/A' }}</td>
                                                 <td>{{ $invoice->created_at }}</td>
@@ -128,6 +130,7 @@
                                             <th colspan="8"></th>
                                             <th>Total:</th>
                                             <th>{{ $total['amount'] }}</th>
+                                            <th>{{ $total['discount_amount'] }}</th>
                                             <th colspan="4"></th>
                                         </tr>
                                     </tfoot>
